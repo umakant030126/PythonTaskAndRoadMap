@@ -13,12 +13,12 @@
 
 # 🟢 PHASE 1: BEGINNER (1–200)
 
-## Day 1
-- [ ] 1. Print Hello World
-- [ ] 2. Swap two variables
-- [ ] 3. Check even/odd
-- [ ] 4. Largest of 3 numbers
-- [ ] 5. Reverse number
+## Day 1 - 2026-04-20 - D001
+- [✓] 1. Print Hello World
+- [✓] 2. Swap two variables
+- [✓] 3. Check even/odd
+- [✓] 4. Largest of 3 numbers
+- [✓] 5. Reverse number
 
 ## Day 2
 - [ ] 6. Palindrome number
