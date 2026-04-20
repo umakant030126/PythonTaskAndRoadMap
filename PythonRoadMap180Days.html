@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6-Month Python Developer Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a3d;
+    --accent: #00e5ff;
+    --accent2: #7c3aed;
+    --accent3: #f59e0b;
+    --accent4: #10b981;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --danger: #ef4444;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BG */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* HEADER */
+  header {
+    padding: 60px 0 40px;
+    text-align: center;
+    position: relative;
+  }
+  .tag {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 14px;
+    border-radius: 2px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    background: rgba(0,229,255,0.05);
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 800;
+    line-height: 1.05;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    max-width: 560px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  /* STATS BAR */
+  .stats {
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 16px 28px;
+    text-align: center;
+  }
+  .stat:first-child { border-radius: 4px 0 0 4px; }
+  .stat:last-child { border-radius: 0 4px 4px 0; }
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    display: block;
+  }
+  .stat-label { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .tab {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+  .tab.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+
+  /* PHASE CARDS */
+  .phase { display: none; }
+  .phase.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .phase-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    padding: 28px;
+    border-radius: 4px;
+    margin-bottom: 24px;
+  }
+  .phase-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent);
+    opacity: 0.3;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .phase-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; }
+  .phase-meta { font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; }
+  .phase-goal {
+    font-size: 0.9rem;
+    color: var(--text);
+    line-height: 1.6;
+    background: rgba(0,229,255,0.05);
+    border: 1px solid rgba(0,229,255,0.15);
+    padding: 12px 16px;
+    border-radius: 3px;
+  }
+
+  /* WEEK GRID */
+  .weeks { display: grid; gap: 16px; }
+  .week-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .week-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    cursor: pointer;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s;
+  }
+  .week-head:hover { background: rgba(0,229,255,0.05); }
+  .week-head.open { border-bottom-color: var(--border); }
+  .week-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .week-title { font-size: 1rem; font-weight: 700; margin-top: 2px; }
+  .chevron {
+    font-size: 18px;
+    color: var(--muted);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .week-head.open .chevron { transform: rotate(180deg); }
+
+  .week-body { display: none; padding: 20px; }
+  .week-body.open { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  @media(max-width: 640px) { .week-body.open { grid-template-columns: 1fr; } }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  .day-list { display: flex; flex-direction: column; gap: 8px; }
+  .day-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-size: 0.83rem;
+    line-height: 1.5;
+    transition: border-color 0.2s;
+  }
+  .day-item:hover { border-color: rgba(0,229,255,0.3); }
+  .day-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    min-width: 28px;
+    padding-top: 2px;
+  }
+  .day-topic { color: var(--text); }
+  .day-sub { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+
+  .q-list { display: flex; flex-direction: column; gap: 8px; }
+  .q-item {
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid;
+    border-radius: 0 3px 3px 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .q-item.easy { border-left-color: var(--accent4); }
+  .q-item.medium { border-left-color: var(--accent3); }
+  .q-item.hard { border-left-color: var(--danger); }
+  .q-diff {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .q-diff.easy { color: var(--accent4); }
+  .q-diff.medium { color: var(--accent3); }
+  .q-diff.hard { color: var(--danger); }
+
+  /* TIPS SECTION */
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 40px;
+    margin-bottom: 60px;
+  }
+  .tip-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 24px;
+    border-radius: 4px;
+  }
+  .tip-icon { font-size: 1.5rem; margin-bottom: 12px; }
+  .tip-title { font-weight: 700; margin-bottom: 8px; font-size: 0.95rem; }
+  .tip-text { color: var(--muted); font-size: 0.82rem; line-height: 1.7; }
+
+  /* COMPANY TAGS */
+  .company-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .ctag {
+    font-family: 'Space Mono', monospace;
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.5px;
+  }
+  .ctag.google { background: rgba(66,133,244,0.15); color: #4285f4; border: 1px solid rgba(66,133,244,0.3); }
+  .ctag.microsoft { background: rgba(0,188,242,0.15); color: #00bcf2; border: 1px solid rgba(0,188,242,0.3); }
+  .ctag.jpmc { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+  .ctag.amazon { background: rgba(255,153,0,0.15); color: #ff9900; border: 1px solid rgba(255,153,0,0.3); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 30px 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-family: 'Space Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="tag">Recruiter & Trainer Perspective</div>
+    <h1>6-Month Python Developer<br>Roadmap</h1>
+    <p class="subtitle">Curated by experience from Google, JPMC, Microsoft & Amazon hiring patterns. From basics to MNC-ready.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><span class="stat-num">180</span><span class="stat-label">Days</span></div>
+    <div class="stat"><span class="stat-num">24</span><span class="stat-label">Weeks</span></div>
+    <div class="stat"><span class="stat-num">6</span><span class="stat-label">Phases</span></div>
+    <div class="stat"><span class="stat-num">200+</span><span class="stat-label">Practice Qs</span></div>
+    <div class="stat"><span class="stat-num">4</span><span class="stat-label">MNC Targets</span></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showPhase(0)">Phase 1 — Core Python</button>
+    <button class="tab" onclick="showPhase(1)">Phase 2 — OOP & Modules</button>
+    <button class="tab" onclick="showPhase(2)">Phase 3 — DSA Foundations</button>
+    <button class="tab" onclick="showPhase(3)">Phase 4 — Advanced DSA</button>
+    <button class="tab" onclick="showPhase(4)">Phase 5 — System Design</button>
+    <button class="tab" onclick="showPhase(5)">Phase 6 — Interview Prep</button>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="phase active" id="phase-0">
+    <div class="phase-header">
+      <div class="phase-num">01</div>
+      <div>
+        <div class="phase-title">Core Python Mastery</div>
+        <div class="phase-meta">📅 Week 1–4 &nbsp;|&nbsp; Days 1–30</div>
+        <div class="phase-goal">🎯 Goal: Build rock-solid Python fundamentals — syntax, data structures, file handling, and Pythonic idioms. You should be able to write clean scripts confidently by end of Month 1.</div>
+        <div class="company-tags">
+          <span class="ctag google">GOOGLE</span><span class="ctag microsoft">MICROSOFT</span><span class="ctag jpmc">JPMC</span>
+        </div>
+      </div>
+    </div>
+    <div class="weeks">
+
+      <div class="week-card">
+        <div class="week-head open" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 1 · Days 1–7</div><div class="week-title">Python Basics & Data Types</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body open">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D1</div><div><div class="day-topic">Setup, REPL, Variables, print(), input()</div><div class="day-sub">PyCharm / VS Code setup, PEP8 intro</div></div></div>
+              <div class="day-item"><div class="day-num">D2</div><div><div class="day-topic">Integers, Floats, Strings, Booleans</div><div class="day-sub">Type casting, arithmetic operators</div></div></div>
+              <div class="day-item"><div class="day-num">D3</div><div><div class="day-topic">String Methods & Formatting</div><div class="day-sub">f-strings, .format(), slicing, indexing</div></div></div>
+              <div class="day-item"><div class="day-num">D4</div><div><div class="day-topic">Lists — Creation, Indexing, Slicing</div><div class="day-sub">append, pop, sort, reverse, list comprehensions</div></div></div>
+              <div class="day-item"><div class="day-num">D5</div><div><div class="day-topic">Tuples & Sets</div><div class="day-sub">Immutability, use cases, set operations</div></div></div>
+              <div class="day-item"><div class="day-num">D6</div><div><div class="day-topic">Dictionaries</div><div class="day-sub">CRUD, nested dicts, dict comprehensions</div></div></div>
+              <div class="day-item"><div class="day-num">D7</div><div><div class="day-topic">Review + Mini Project</div><div class="day-sub">Build a Student Grade Calculator</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item easy"><div class="q-diff easy">Easy</div>Write a function that counts vowels in a string. Use it to process a CSV of product names.</div>
+              <div class="q-item easy"><div class="q-diff easy">Easy</div>Given a list of employee salaries, find the average, max, and min using only built-in functions.</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>A bank log has transactions as strings like "+500", "-200". Parse and compute final balance.</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Build an inventory tracker dict. Add/remove items, update quantities, print low-stock alerts.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Parse a raw server log string and extract IP addresses, timestamps, and HTTP status codes into a dict.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 2 · Days 8–14</div><div class="week-title">Control Flow & Functions</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D8</div><div><div class="day-topic">if / elif / else, Ternary</div><div class="day-sub">Nested conditions, short-circuit logic</div></div></div>
+              <div class="day-item"><div class="day-num">D9</div><div><div class="day-topic">for loops, while loops, break/continue</div><div class="day-sub">enumerate(), zip(), range()</div></div></div>
+              <div class="day-item"><div class="day-num">D10</div><div><div class="day-topic">Functions — def, args, *args, **kwargs</div><div class="day-sub">Default params, return values</div></div></div>
+              <div class="day-item"><div class="day-num">D11</div><div><div class="day-topic">Scope — LEGB Rule, global, nonlocal</div><div class="day-sub">Variable lifetime, closure basics</div></div></div>
+              <div class="day-item"><div class="day-num">D12</div><div><div class="day-topic">Lambda, map, filter, reduce</div><div class="day-sub">Functional programming patterns</div></div></div>
+              <div class="day-item"><div class="day-num">D13</div><div><div class="day-topic">Recursion — base case, call stack</div><div class="day-sub">Factorial, Fibonacci, tree traversal basics</div></div></div>
+              <div class="day-item"><div class="day-num">D14</div><div><div class="day-topic">Review + Project</div><div class="day-sub">ATM CLI Simulator with all concepts</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item easy"><div class="q-diff easy">Easy</div>Write a function that validates a user password: min 8 chars, 1 uppercase, 1 digit, 1 special char.</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Use map/filter to process a list of transactions and return only fraud-flagged ones (amount > 10000).</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Write a recursive function to flatten a deeply nested Python list (common in JSON parsing).</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Build a retry decorator that retries a failing API call up to N times with exponential backoff delay.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 3 · Days 15–21</div><div class="week-title">File I/O, Exceptions & Modules</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D15</div><div><div class="day-topic">File Handling — read, write, append</div><div class="day-sub">Context managers, with open()</div></div></div>
+              <div class="day-item"><div class="day-num">D16</div><div><div class="day-topic">CSV & JSON Processing</div><div class="day-sub">csv module, json.load/dump, real data</div></div></div>
+              <div class="day-item"><div class="day-num">D17</div><div><div class="day-topic">Exception Handling</div><div class="day-sub">try/except/finally, custom exceptions</div></div></div>
+              <div class="day-item"><div class="day-num">D18</div><div><div class="day-topic">Standard Library — os, sys, datetime</div><div class="day-sub">Path manipulation, timestamps, args</div></div></div>
+              <div class="day-item"><div class="day-num">D19</div><div><div class="day-topic">Regular Expressions — re module</div><div class="day-sub">match, search, findall, groups</div></div></div>
+              <div class="day-item"><div class="day-num">D20</div><div><div class="day-topic">Creating Your Own Modules & Packages</div><div class="day-sub">__init__.py, imports, __main__</div></div></div>
+              <div class="day-item"><div class="day-num">D21</div><div><div class="day-topic">Project: Log Analyzer</div><div class="day-sub">Parse nginx/apache log files, extract stats</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item easy"><div class="q-diff easy">Easy</div>Read a CSV of employee records, filter by department, and write filtered records to a new file.</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Parse a JSON API response of stock prices. Handle missing keys and malformed data gracefully.</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Use regex to extract all email addresses and phone numbers from a large unstructured text file.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Build a config file manager that reads YAML/JSON configs, validates schema, and raises typed exceptions.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 4 · Days 22–30</div><div class="week-title">Iterators, Generators & Decorators</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D22</div><div><div class="day-topic">Iterators & Iterables</div><div class="day-sub">__iter__, __next__, custom iterators</div></div></div>
+              <div class="day-item"><div class="day-num">D23</div><div><div class="day-topic">Generators — yield, yield from</div><div class="day-sub">Memory efficiency, infinite sequences</div></div></div>
+              <div class="day-item"><div class="day-num">D24</div><div><div class="day-topic">Decorators — function decorators</div><div class="day-sub">@wraps, chaining decorators</div></div></div>
+              <div class="day-item"><div class="day-num">D25</div><div><div class="day-topic">Context Managers — __enter__, __exit__</div><div class="day-sub">contextlib, real use cases</div></div></div>
+              <div class="day-item"><div class="day-num">D26</div><div><div class="day-topic">collections module</div><div class="day-sub">Counter, defaultdict, OrderedDict, deque</div></div></div>
+              <div class="day-item"><div class="day-num">D27</div><div><div class="day-topic">functools — partial, lru_cache, reduce</div><div class="day-sub">Memoization patterns</div></div></div>
+              <div class="day-item"><div class="day-num">D28–30</div><div><div class="day-topic">Phase 1 Capstone Project</div><div class="day-sub">Data pipeline: read CSV → transform → write JSON with logging</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Create a generator that streams large log files line by line without loading into memory. (Google SRE style)</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Write a timing decorator that logs execution time of any function to a file. Apply to 3 functions.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Use lru_cache to optimize a recursive Fibonacci. Compare performance with and without cache at N=40.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Build a pipeline using generators: read → filter → transform → aggregate for sales data processing.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase" id="phase-1">
+    <div class="phase-header">
+      <div class="phase-num">02</div>
+      <div>
+        <div class="phase-title">OOP, Testing & Advanced Python</div>
+        <div class="phase-meta">📅 Week 5–8 &nbsp;|&nbsp; Days 31–60</div>
+        <div class="phase-goal">🎯 Goal: Master Object-Oriented Programming, write testable code with pytest, understand concurrency basics, and work with APIs. These are core interview topics at JPMC, Microsoft and Google.</div>
+        <div class="company-tags">
+          <span class="ctag jpmc">JPMC</span><span class="ctag microsoft">MICROSOFT</span><span class="ctag amazon">AMAZON</span>
+        </div>
+      </div>
+    </div>
+    <div class="weeks">
+
+      <div class="week-card">
+        <div class="week-head open" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 5 · Days 31–37</div><div class="week-title">OOP — Classes, Inheritance, Polymorphism</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body open">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D31</div><div><div class="day-topic">Classes, __init__, self, attributes</div><div class="day-sub">Class vs instance attributes</div></div></div>
+              <div class="day-item"><div class="day-num">D32</div><div><div class="day-topic">Methods — instance, class, static</div><div class="day-sub">@classmethod, @staticmethod</div></div></div>
+              <div class="day-item"><div class="day-num">D33</div><div><div class="day-topic">Inheritance & super()</div><div class="day-sub">Single, multiple inheritance, MRO</div></div></div>
+              <div class="day-item"><div class="day-num">D34</div><div><div class="day-topic">Polymorphism & Duck Typing</div><div class="day-sub">Method overriding, operator overloading</div></div></div>
+              <div class="day-item"><div class="day-num">D35</div><div><div class="day-topic">Encapsulation — private, protected</div><div class="day-sub">@property, getters/setters</div></div></div>
+              <div class="day-item"><div class="day-num">D36</div><div><div class="day-topic">Abstract Classes & Interfaces</div><div class="day-sub">abc module, ABCMeta</div></div></div>
+              <div class="day-item"><div class="day-num">D37</div><div><div class="day-topic">Project: Banking System OOP</div><div class="day-sub">Account, SavingsAccount, LoanAccount classes</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Model a payment system: base class Payment with subclasses CreditCard, UPI, NetBanking. Each has a process() method. (JPMC scenario)</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Implement an Employee class hierarchy with Manager and Contractor. Override salary_calc() for each type.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Design a plugin system using abstract base classes. New plugins should auto-register without changing core code.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Implement a fully functional Stack, Queue, and PriorityQueue using Python classes with proper encapsulation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 6 · Days 38–44</div><div class="week-title">Testing, Debugging & Code Quality</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D38</div><div><div class="day-topic">unittest basics</div><div class="day-sub">TestCase, assertions, setUp/tearDown</div></div></div>
+              <div class="day-item"><div class="day-num">D39</div><div><div class="day-topic">pytest — fixtures, parametrize</div><div class="day-sub">conftest.py, markers, coverage</div></div></div>
+              <div class="day-item"><div class="day-num">D40</div><div><div class="day-topic">Mocking with unittest.mock</div><div class="day-sub">MagicMock, patch, side_effect</div></div></div>
+              <div class="day-item"><div class="day-num">D41</div><div><div class="day-topic">Debugging — pdb, logging module</div><div class="day-sub">Breakpoints, log levels, handlers</div></div></div>
+              <div class="day-item"><div class="day-num">D42</div><div><div class="day-topic">Type Hints & mypy</div><div class="day-sub">Optional, Union, TypeVar, dataclasses</div></div></div>
+              <div class="day-item"><div class="day-num">D43</div><div><div class="day-topic">Code Quality — flake8, black, pylint</div><div class="day-sub">CI/CD basics with GitHub Actions</div></div></div>
+              <div class="day-item"><div class="day-num">D44</div><div><div class="day-topic">Project: Write full test suite</div><div class="day-sub">Test the Banking System from Week 5</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item easy"><div class="q-diff easy">Easy</div>Write pytest tests for a function that converts currency. Cover edge cases: zero, negative, invalid input.</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Mock an external REST API call in a unit test. Ensure your code handles 200, 404, and 500 responses.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Add type hints to a legacy codebase snippet and fix all mypy errors. Justify each type decision.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 7–8 · Days 45–60</div><div class="week-title">Concurrency, APIs & Design Patterns</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D45</div><div><div class="day-topic">Threading basics & GIL</div><div class="day-sub">Thread, Lock, race conditions</div></div></div>
+              <div class="day-item"><div class="day-num">D46</div><div><div class="day-topic">Multiprocessing</div><div class="day-sub">Pool, Queue, shared memory</div></div></div>
+              <div class="day-item"><div class="day-num">D47</div><div><div class="day-topic">asyncio & async/await</div><div class="day-sub">Event loop, coroutines, gather()</div></div></div>
+              <div class="day-item"><div class="day-num">D48</div><div><div class="day-topic">REST APIs with requests</div><div class="day-sub">GET/POST/PUT/DELETE, auth, headers</div></div></div>
+              <div class="day-item"><div class="day-num">D49</div><div><div class="day-topic">FastAPI Basics</div><div class="day-sub">Routes, Pydantic models, async endpoints</div></div></div>
+              <div class="day-item"><div class="day-num">D50–55</div><div><div class="day-topic">Design Patterns in Python</div><div class="day-sub">Singleton, Factory, Observer, Strategy, Decorator</div></div></div>
+              <div class="day-item"><div class="day-num">D56–60</div><div><div class="day-topic">Phase 2 Capstone</div><div class="day-sub">Async microservice with REST API + full tests</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Fetch data from 5 APIs concurrently using asyncio. Compare time vs sequential. (Google SRE style)</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Implement Singleton pattern for a DB connection pool. Ensure thread safety with locks.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Build an Observer pattern event system for a stock price notifier. Multiple subscribers, one publisher.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase" id="phase-2">
+    <div class="phase-header">
+      <div class="phase-num">03</div>
+      <div>
+        <div class="phase-title">DSA Foundations — Arrays to Trees</div>
+        <div class="phase-meta">📅 Week 9–14 &nbsp;|&nbsp; Days 61–105</div>
+        <div class="phase-goal">🎯 Goal: Understand core data structures and implement them from scratch in Python. DSA is the #1 filter in Google, Microsoft & Amazon coding rounds. Solve 3–5 problems daily.</div>
+        <div class="company-tags">
+          <span class="ctag google">GOOGLE</span><span class="ctag amazon">AMAZON</span><span class="ctag microsoft">MICROSOFT</span>
+        </div>
+      </div>
+    </div>
+    <div class="weeks">
+
+      <div class="week-card">
+        <div class="week-head open" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 9–10 · Days 61–75</div><div class="week-title">Arrays, Strings & Hashing</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body open">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D61–62</div><div><div class="day-topic">Array basics, Two Pointers</div><div class="day-sub">Sliding window, prefix sums</div></div></div>
+              <div class="day-item"><div class="day-num">D63–64</div><div><div class="day-topic">String manipulation algorithms</div><div class="day-sub">Palindrome, anagram, KMP, Rabin-Karp</div></div></div>
+              <div class="day-item"><div class="day-num">D65–67</div><div><div class="day-topic">Hash Maps & Hash Sets</div><div class="day-sub">Collision handling, open addressing, chaining</div></div></div>
+              <div class="day-item"><div class="day-num">D68–70</div><div><div class="day-topic">Sorting Algorithms</div><div class="day-sub">Bubble, Merge, Quick, Heap sort — implement each</div></div></div>
+              <div class="day-item"><div class="day-num">D71–75</div><div><div class="day-topic">Binary Search & Variants</div><div class="day-sub">Search in rotated array, first/last occurrence</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item easy"><div class="q-diff easy">Easy</div>Given a list of transaction IDs, find duplicates using hashing. Return first duplicate found.</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Find the longest substring without repeating characters in a URL slug. (Sliding window)</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Given sorted logs by timestamp, binary search for all events in a time range [T1, T2].</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Given an array of stock prices, find max profit with at most K transactions. (DP + Arrays)</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Group anagrams from a list of 10,000 words. Optimize for time. Explain your hash function.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 11–12 · Days 76–90</div><div class="week-title">Linked Lists, Stacks & Queues</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D76–79</div><div><div class="day-topic">Singly & Doubly Linked Lists</div><div class="day-sub">Insert, delete, reverse, detect cycle (Floyd's)</div></div></div>
+              <div class="day-item"><div class="day-num">D80–82</div><div><div class="day-topic">Stack — implementation & applications</div><div class="day-sub">Valid parentheses, min stack, evaluate expression</div></div></div>
+              <div class="day-item"><div class="day-num">D83–85</div><div><div class="day-topic">Queue & Deque</div><div class="day-sub">BFS scaffold, circular queue, sliding window max</div></div></div>
+              <div class="day-item"><div class="day-num">D86–90</div><div><div class="day-topic">Priority Queue / Heap</div><div class="day-sub">heapq module, K largest, merge K sorted lists</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Implement an LRU Cache using doubly linked list + hashmap. This is a classic JPMC/Google question.</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Use a stack to validate and evaluate arithmetic expressions in a calculator app.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Merge K sorted server log streams into one unified chronological stream. Use a min-heap.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 13–14 · Days 91–105</div><div class="week-title">Trees & Binary Search Trees</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D91–94</div><div><div class="day-topic">Binary Trees — BFS & DFS traversals</div><div class="day-sub">Inorder, preorder, postorder, level-order</div></div></div>
+              <div class="day-item"><div class="day-num">D95–98</div><div><div class="day-topic">BST — insert, delete, search</div><div class="day-sub">Validate BST, kth smallest, LCA</div></div></div>
+              <div class="day-item"><div class="day-num">D99–102</div><div><div class="day-topic">Tree DP problems</div><div class="day-sub">Max path sum, diameter, balanced check</div></div></div>
+              <div class="day-item"><div class="day-num">D103–105</div><div><div class="day-topic">Trie — insert, search, prefix</div><div class="day-sub">Autocomplete system, word dictionary</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Build a file system directory traversal using tree DFS. Print all paths from root to leaf. (Microsoft)</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Implement a Trie-based autocomplete for a search engine. Handle 100K words efficiently.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Serialize and deserialize a binary tree to/from a string for storage in a database.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase" id="phase-3">
+    <div class="phase-header">
+      <div class="phase-num">04</div>
+      <div>
+        <div class="phase-title">Advanced DSA — Graphs, DP & Greedy</div>
+        <div class="phase-meta">📅 Week 15–18 &nbsp;|&nbsp; Days 106–135</div>
+        <div class="phase-goal">🎯 Goal: Conquer the hardest interview topics — graph algorithms, dynamic programming, and greedy problems. These appear in 70% of FAANG final rounds. Master at least 60 LeetCode problems this phase.</div>
+        <div class="company-tags">
+          <span class="ctag google">GOOGLE</span><span class="ctag amazon">AMAZON</span><span class="ctag microsoft">MICROSOFT</span><span class="ctag jpmc">JPMC</span>
+        </div>
+      </div>
+    </div>
+    <div class="weeks">
+
+      <div class="week-card">
+        <div class="week-head open" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 15–16 · Days 106–120</div><div class="week-title">Graphs — BFS, DFS, Shortest Path</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body open">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D106–108</div><div><div class="day-topic">Graph representations</div><div class="day-sub">Adjacency list/matrix, directed/undirected</div></div></div>
+              <div class="day-item"><div class="day-num">D109–111</div><div><div class="day-topic">BFS & DFS on graphs</div><div class="day-sub">Connected components, cycle detection</div></div></div>
+              <div class="day-item"><div class="day-num">D112–114</div><div><div class="day-topic">Topological Sort</div><div class="day-sub">Kahn's algorithm, DFS-based, course schedule</div></div></div>
+              <div class="day-item"><div class="day-num">D115–117</div><div><div class="day-topic">Shortest Path — Dijkstra, Bellman-Ford</div><div class="day-sub">Weighted graphs, negative cycles</div></div></div>
+              <div class="day-item"><div class="day-num">D118–120</div><div><div class="day-topic">Union-Find / Disjoint Set</div><div class="day-sub">Path compression, rank, Kruskal's MST</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Given a network of servers (graph), find all servers unreachable from the main hub. (BFS)</div>
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Given task dependencies in a CI/CD pipeline, find a valid execution order. (Topological sort)</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Find the cheapest flight route with at most K stops. (Dijkstra variant — Amazon question)</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Detect if a microservices call graph has circular dependencies. Return the cycle. (Google)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 17–18 · Days 121–135</div><div class="week-title">Dynamic Programming & Greedy</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D121–123</div><div><div class="day-topic">DP Fundamentals — memoization vs tabulation</div><div class="day-sub">Fibonacci, climbing stairs, coin change</div></div></div>
+              <div class="day-item"><div class="day-num">D124–126</div><div><div class="day-topic">1D & 2D DP problems</div><div class="day-sub">Knapsack, LCS, LIS, edit distance</div></div></div>
+              <div class="day-item"><div class="day-num">D127–129</div><div><div class="day-topic">DP on strings & intervals</div><div class="day-sub">Palindrome partition, matrix chain, burst balloons</div></div></div>
+              <div class="day-item"><div class="day-num">D130–135</div><div><div class="day-topic">Greedy Algorithms</div><div class="day-sub">Interval scheduling, Huffman encoding, jump game</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Given budget constraints and project values (0/1 knapsack), maximize ROI for a product portfolio.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Find minimum edit operations to migrate one database schema name to another. (Edit distance — JPMC)</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Schedule maximum non-overlapping meetings in a day. Greedy interval selection.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="phase" id="phase-4">
+    <div class="phase-header">
+      <div class="phase-num">05</div>
+      <div>
+        <div class="phase-title">System Design & Databases</div>
+        <div class="phase-meta">📅 Week 19–21 &nbsp;|&nbsp; Days 136–158</div>
+        <div class="phase-goal">🎯 Goal: Learn how real systems are built. System design rounds are mandatory for SDE-2+ at Google, JPMC, Microsoft. Understand SQL/NoSQL, caching, load balancing, and microservices at a conceptual level.</div>
+        <div class="company-tags">
+          <span class="ctag google">GOOGLE</span><span class="ctag jpmc">JPMC</span><span class="ctag microsoft">MICROSOFT</span>
+        </div>
+      </div>
+    </div>
+    <div class="weeks">
+
+      <div class="week-card">
+        <div class="week-head open" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 19 · Days 136–142</div><div class="week-title">Databases & SQL with Python</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body open">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D136–137</div><div><div class="day-topic">SQL fundamentals + SQLite3 in Python</div><div class="day-sub">SELECT, JOINs, GROUP BY, subqueries</div></div></div>
+              <div class="day-item"><div class="day-num">D138–139</div><div><div class="day-topic">SQLAlchemy ORM</div><div class="day-sub">Models, sessions, relationships, migrations</div></div></div>
+              <div class="day-item"><div class="day-num">D140</div><div><div class="day-topic">NoSQL — MongoDB basics with PyMongo</div><div class="day-sub">CRUD, indexing, aggregation pipeline</div></div></div>
+              <div class="day-item"><div class="day-num">D141</div><div><div class="day-topic">Redis — caching with redis-py</div><div class="day-sub">Key-value, TTL, pub/sub, rate limiting</div></div></div>
+              <div class="day-item"><div class="day-num">D142</div><div><div class="day-topic">Project: REST API + DB backend</div><div class="day-sub">FastAPI + SQLAlchemy + Redis cache</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item medium"><div class="q-diff medium">Medium</div>Design a schema for an e-commerce order management system. Write queries for top 5 revenue products.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Add Redis caching to an API endpoint. Invalidate cache on data update. Measure latency improvement.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 20–21 · Days 143–158</div><div class="week-title">System Design Concepts</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D143–145</div><div><div class="day-topic">Scalability — horizontal vs vertical scaling</div><div class="day-sub">Load balancers, CDN, reverse proxy</div></div></div>
+              <div class="day-item"><div class="day-num">D146–148</div><div><div class="day-topic">Microservices & API Gateway</div><div class="day-sub">Service discovery, rate limiting, circuit breaker</div></div></div>
+              <div class="day-item"><div class="day-num">D149–151</div><div><div class="day-topic">Message Queues — Kafka, RabbitMQ concepts</div><div class="day-sub">Producer-consumer, idempotency, dead letter queue</div></div></div>
+              <div class="day-item"><div class="day-num">D152–155</div><div><div class="day-topic">Design Case Studies</div><div class="day-sub">Design URL shortener, Twitter feed, ride-sharing</div></div></div>
+              <div class="day-item"><div class="day-num">D156–158</div><div><div class="day-topic">CAP Theorem, ACID, BASE</div><div class="day-sub">Consistency vs availability, distributed systems</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Real-World Practice Questions</div>
+            <div class="q-list">
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Design a URL shortener like bit.ly. Discuss schema, hashing, cache layer, and scaling to 1M req/day.</div>
+              <div class="q-item hard"><div class="q-diff hard">Hard</div>Design a notification service (email + push + SMS) for a banking app with 5M users. (JPMC round)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 6 -->
+  <div class="phase" id="phase-5">
+    <div class="phase-header">
+      <div class="phase-num">06</div>
+      <div>
+        <div class="phase-title">Interview Prep & Mock Rounds</div>
+        <div class="phase-meta">📅 Week 22–24 &nbsp;|&nbsp; Days 159–180</div>
+        <div class="phase-goal">🎯 Goal: Simulate real interview conditions. Timed coding, system design walkthroughs, behavioral rounds, resume polish, and company-specific question banks. You're MNC-ready by Day 180.</div>
+        <div class="company-tags">
+          <span class="ctag google">GOOGLE</span><span class="ctag microsoft">MICROSOFT</span><span class="ctag jpmc">JPMC</span><span class="ctag amazon">AMAZON</span>
+        </div>
+      </div>
+    </div>
+    <div class="weeks">
+
+      <div class="week-card">
+        <div class="week-head open" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 22 · Days 159–165</div><div class="week-title">Targeted Company Prep</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body open">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D159</div><div><div class="day-topic">Google — Focus areas</div><div class="day-sub">Graphs, DP, Big O, code cleanliness, test cases</div></div></div>
+              <div class="day-item"><div class="day-num">D160</div><div><div class="day-topic">Microsoft — Focus areas</div><div class="day-sub">Trees, OOP design, Azure fundamentals, BFS/DFS</div></div></div>
+              <div class="day-item"><div class="day-num">D161</div><div><div class="day-topic">JPMC — Focus areas</div><div class="day-sub">Python scripting, SQL, REST APIs, risk modeling logic</div></div></div>
+              <div class="day-item"><div class="day-num">D162</div><div><div class="day-topic">Amazon — Focus areas</div><div class="day-sub">Leadership Principles, arrays/heaps, scalable design</div></div></div>
+              <div class="day-item"><div class="day-num">D163–165</div><div><div class="day-topic">Timed mock sessions (45 min each)</div><div class="day-sub">2 problems per session, explain aloud</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Company-Specific Questions</div>
+            <div class="q-list">
+              <div class="q-item hard"><div class="q-diff hard">Google</div>Given a 2D grid of cities and roads, find minimum cost to connect all cities. (MST — real Google round)</div>
+              <div class="q-item hard"><div class="q-diff hard">Microsoft</div>Implement a versioned key-value store where get(key, timestamp) returns value at that time.</div>
+              <div class="q-item hard"><div class="q-diff hard">JPMC Hard</div>Given a stream of market trades, find the median price at each trade event in real-time. (Two heaps)</div>
+              <div class="q-item hard"><div class="q-diff hard">Amazon</div>Fulfill maximum orders given warehouse inventory. Orders are prioritized by Prime status. (Greedy + heap)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-card">
+        <div class="week-head" onclick="toggleWeek(this)">
+          <div><div class="week-label">Week 23–24 · Days 166–180</div><div class="week-title">Final Sprint — Resume, Behavioral & Mock Loops</div></div>
+          <span class="chevron">▾</span>
+        </div>
+        <div class="week-body">
+          <div>
+            <div class="section-label">Daily Topics</div>
+            <div class="day-list">
+              <div class="day-item"><div class="day-num">D166–168</div><div><div class="day-topic">Resume crafting for Python roles</div><div class="day-sub">STAR format projects, GitHub, quantify impact</div></div></div>
+              <div class="day-item"><div class="day-num">D169–171</div><div><div class="day-topic">Behavioral Interview prep</div><div class="day-sub">STAR stories: conflict, failure, leadership, growth</div></div></div>
+              <div class="day-item"><div class="day-num">D172–174</div><div><div class="day-topic">Full mock interview loops (peer/mentor)</div><div class="day-sub">Coding + System Design + Behavioral back-to-back</div></div></div>
+              <div class="day-item"><div class="day-num">D175–177</div><div><div class="day-topic">Weak area targeted revision</div><div class="day-sub">Identify gaps, solve 5 problems in weak area/day</div></div></div>
+              <div class="day-item"><div class="day-num">D178–180</div><div><div class="day-topic">Final review + Apply!</div><div class="day-sub">Apply to 10+ companies, LinkedIn/Naukri optimization</div></div></div>
+            </div>
+          </div>
+          <div>
+            <div class="section-label">Behavioral Questions (STAR Format)</div>
+            <div class="q-list">
+              <div class="q-item easy"><div class="q-diff easy">Behavioral</div>"Tell me about a time you debugged a complex production issue." (Situation, Task, Action, Result)</div>
+              <div class="q-item medium"><div class="q-diff medium">Behavioral</div>"Describe a project where you had to learn a new technology quickly under a deadline."</div>
+              <div class="q-item hard"><div class="q-diff hard">Behavioral</div>"Tell me about a time you disagreed with your team's technical decision and how you handled it."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-icon">⚡</div>
+      <div class="tip-title">Daily Coding Habit</div>
+      <div class="tip-text">Solve 2–3 LeetCode problems daily from Week 9 onward. Use the NeetCode 150 list as your problem bank. Quality over quantity — always explain your solution out loud.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📦</div>
+      <div class="tip-title">Build GitHub Portfolio</div>
+      <div class="tip-text">Every capstone project goes on GitHub with a README, tests, and docstrings. Recruiters check GitHub. Aim for 5 strong projects with real use-case descriptions by Month 5.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🧠</div>
+      <div class="tip-title">Big-O Is Non-Negotiable</div>
+      <div class="tip-text">For every solution you write, state the time and space complexity. Interviewers at Google and JPMC will ask this immediately. Practice until it's automatic.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🎯</div>
+      <div class="tip-title">Mock Interviews Weekly</div>
+      <div class="tip-text">From Month 4, do 1 mock interview per week with a peer or on Pramp/Interviewing.io. The ability to code while talking is a skill that requires separate practice.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📚</div>
+      <div class="tip-title">Resources</div>
+      <div class="tip-text">Books: Fluent Python, Clean Code. Sites: LeetCode, NeetCode.io, HackerRank. YT: Neetcode, Tech With Tim, Corey Schafer. Courses: Grokking System Design.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🏆</div>
+      <div class="tip-title">Target LeetCode Numbers</div>
+      <div class="tip-text">By Month 6 aim for: 80+ Easy, 100+ Medium, 30+ Hard problems solved. Quality matters more than count — be able to solve mediums in under 20 minutes.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="container">
+    Python Developer Roadmap — 6 Months to MNC Ready &nbsp;|&nbsp; Google · JPMC · Microsoft · Amazon
+  </div>
+</footer>
+
+<script>
+  function showPhase(index) {
+    document.querySelectorAll('.phase').forEach((p, i) => {
+      p.classList.toggle('active', i === index);
+    });
+    document.querySelectorAll('.tab').forEach((t, i) => {
+      t.classList.toggle('active', i === index);
+    });
+  }
+
+  function toggleWeek(head) {
+    const body = head.nextElementSibling;
+    const isOpen = head.classList.contains('open');
+    head.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+  }
+</script>
+</body>
+</html>
