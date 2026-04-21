@@ -20,12 +20,12 @@
 - [✓] 4. Largest of 3 numbers
 - [✓] 5. Reverse number
 
-## Day 2
-- [ ] 6. Palindrome number
-- [ ] 7. Count digits
-- [ ] 8. Sum of digits
-- [ ] 9. Factorial
-- [ ] 10. Fibonacci
+## Day 2 - 2026-04-21 - D002
+- [✓] 6. Palindrome number
+- [✓] 7. Count digits
+- [✓] 8. Sum of digits
+- [✓] 9. Factorial
+- [✓] 10. Fibonacci
 
 ---
 
