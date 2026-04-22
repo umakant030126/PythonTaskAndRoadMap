@@ -29,7 +29,7 @@
 
 ---
 
-## Day 3
+## Day 3 - 2026-04-22 - D003
 - [✓] 11. Reverse string
 - [✓] 12. Palindrome string
 - [✓] 13. Count vowels
@@ -38,12 +38,12 @@
 
 ---
 
-## Day 4
-- [ ] 16. Anagram check
-- [ ] 17. First non-repeating char
-- [ ] 18. Capitalize words
-- [ ] 19. Character frequency
-- [ ] 20. Replace substring
+## Day 4 - 2026-04-22 - D004
+- [✓] 16. Anagram check
+- [✓] 17. First non-repeating char
+- [✓] 18. Capitalize words
+- [✓] 19. Character frequency
+- [✓] 20. Replace substring
 
 ---
 
