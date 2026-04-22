@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Master Cheat Sheet</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --card: #1a1d27;
+    --border: #252836;
+    --accent: #f7c948;
+    --accent2: #4af7a8;
+    --accent3: #7b6ff0;
+    --accent4: #f76f6f;
+    --accent5: #6fb3f7;
+    --text: #e8eaf0;
+    --muted: #7a7f94;
+    --code-bg: #0a0c10;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: linear-gradient(135deg, #0d0f14 0%, #1a1025 50%, #0d0f14 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 48px 32px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(247,201,72,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(247,201,72,0.12);
+    border: 1px solid rgba(247,201,72,0.3);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent) 0%, #f7a348 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  header p {
+    color: var(--muted);
+    font-size: 15px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Nav Tabs ── */
+  .nav-wrap {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-wrap::-webkit-scrollbar { display: none; }
+  nav {
+    display: flex;
+    gap: 0;
+    min-width: max-content;
+    padding: 0 16px;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 14px 18px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  nav button:hover { color: var(--text); }
+  nav button.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ── Layout ── */
+  main { max-width: 1400px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .section-sub {
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 28px;
+    padding-left: 22px;
+  }
+
+  .grid { display: grid; gap: 20px; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(540px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: rgba(247,201,72,0.25); }
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tag-yellow { background: rgba(247,201,72,0.15); color: var(--accent); }
+  .tag-green  { background: rgba(74,247,168,0.12); color: var(--accent2); }
+  .tag-purple { background: rgba(123,111,240,0.15); color: var(--accent3); }
+  .tag-red    { background: rgba(247,111,111,0.15); color: var(--accent4); }
+  .tag-blue   { background: rgba(111,179,247,0.15); color: var(--accent5); }
+
+  /* ── Code blocks ── */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid #1e2130;
+    border-radius: 8px;
+    padding: 16px;
+    overflow-x: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    margin-top: 10px;
+  }
+  code { font-family: 'JetBrains Mono', monospace; }
+
+  .kw  { color: #c792ea; }   /* keyword */
+  .fn  { color: #82aaff; }   /* function */
+  .st  { color: #c3e88d; }   /* string */
+  .nm  { color: #f78c6c; }   /* number */
+  .cm  { color: #546e7a; font-style: italic; } /* comment */
+  .bl  { color: var(--accent2); } /* builtin */
+  .op  { color: #89ddff; }   /* operator/punc */
+  .cn  { color: var(--accent); }  /* constant */
+
+  /* ── Method tables ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 10px;
+  }
+  th {
+    background: #0f1117;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 7px 12px;
+    border-bottom: 1px solid rgba(37,40,54,0.7);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(255,255,255,0.025); }
+  .method-name { color: var(--accent5); }
+  .method-ret  { color: var(--accent2); }
+  .method-desc { color: var(--muted); font-family: 'Syne', sans-serif; font-size: 12px; }
+
+  /* ── Info boxes ── */
+  .info-box {
+    border-left: 3px solid var(--accent3);
+    background: rgba(123,111,240,0.07);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #b0b5cc;
+  }
+  .info-box strong { color: var(--accent3); }
+  .warn-box {
+    border-left: 3px solid var(--accent4);
+    background: rgba(247,111,111,0.07);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #b0b5cc;
+  }
+  .warn-box strong { color: var(--accent4); }
+  .tip-box {
+    border-left: 3px solid var(--accent2);
+    background: rgba(74,247,168,0.06);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #b0b5cc;
+  }
+  .tip-box strong { color: var(--accent2); }
+
+  /* ── Inline code ── */
+  .ic {
+    background: rgba(130,170,255,0.1);
+    color: var(--accent5);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 1px 6px;
+    border-radius: 4px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    header { padding: 36px 16px 28px; }
+    main { padding: 20px 12px 40px; }
+  }
+
+  /* scrollbar */
+  pre::-webkit-scrollbar { height: 4px; }
+  pre::-webkit-scrollbar-track { background: transparent; }
+  pre::-webkit-scrollbar-thumb { background: #2a2e3e; border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">📘 Daily Revision Guide</div>
+  <h1>Python Master Cheat Sheet</h1>
+  <p>// Data Types · JSON · Excel · File Handling · Methods & Functions</p>
+</header>
+
+<div class="nav-wrap">
+  <nav>
+    <button class="active" onclick="show('strings')">Strings</button>
+    <button onclick="show('numbers')">Numbers</button>
+    <button onclick="show('lists')">Lists</button>
+    <button onclick="show('tuples')">Tuples</button>
+    <button onclick="show('dicts')">Dictionaries</button>
+    <button onclick="show('sets')">Sets</button>
+    <button onclick="show('booleans')">Booleans & None</button>
+    <button onclick="show('json')">JSON</button>
+    <button onclick="show('files')">File Handling</button>
+    <button onclick="show('excel')">Excel</button>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════════════════════ STRINGS -->
+<div id="strings" class="section active">
+  <div class="section-title"><span class="dot" style="background:var(--accent)"></span>Strings <span class="tag tag-yellow">str</span></div>
+  <div class="section-sub"># Immutable sequence of Unicode characters</div>
+
+  <div class="grid grid-2">
+
+    <div class="card">
+      <div class="card-title">Creating Strings <span class="tag tag-yellow">literals</span></div>
+<pre><span class="cm"># Single, double, triple quotes</span>
+s1 = <span class="st">'Hello'</span>
+s2 = <span class="st">"World"</span>
+s3 = <span class="st">"""Multi
+line string"""</span>
+s4 = <span class="st">r'\n is raw'</span>          <span class="cm"># raw string</span>
+s5 = <span class="st">b'bytes string'</span>      <span class="cm"># bytes literal</span>
+s6 = <span class="st">f'Pi = {3.14:.2f}'</span>   <span class="cm"># f-string</span>
+
+<span class="cm"># Concatenation & repetition</span>
+greeting = <span class="st">"Hello"</span> + <span class="st">" World"</span>
+repeated = <span class="st">"ha"</span> * <span class="nm">3</span>         <span class="cm"># 'hahaha'</span>
+
+<span class="cm"># Multi-line with \</span>
+long_str = <span class="st">"This is a very "</span> \
+           <span class="st">"long string"</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Indexing & Slicing <span class="tag tag-yellow">access</span></div>
+<pre>s = <span class="st">"Python"</span>
+<span class="cm">#    P  y  t  h  o  n</span>
+<span class="cm">#    0  1  2  3  4  5  (positive)</span>
+<span class="cm">#   -6 -5 -4 -3 -2 -1  (negative)</span>
+
+s[<span class="nm">0</span>]       <span class="cm"># 'P'</span>
+s[-<span class="nm">1</span>]      <span class="cm"># 'n'</span>
+s[<span class="nm">1</span>:<span class="nm">4</span>]     <span class="cm"># 'yth'  (start:stop, stop excluded)</span>
+s[:<span class="nm">3</span>]      <span class="cm"># 'Pyt'  (from beginning)</span>
+s[<span class="nm">3</span>:]      <span class="cm"># 'hon'  (to end)</span>
+s[::<span class="nm">2</span>]     <span class="cm"># 'Pto'  (every 2nd char)</span>
+s[::-<span class="nm">1</span>]    <span class="cm"># 'nohtyP' (reversed)</span>
+
+<span class="cm"># Length</span>
+<span class="bl">len</span>(s)     <span class="cm"># 6</span>
+<span class="cm"># Membership</span>
+<span class="st">'Py'</span> <span class="kw">in</span> s  <span class="cm"># True</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Case & Search Methods <span class="tag tag-yellow">methods</span></div>
+      <table>
+        <tr><th>Method</th><th>Returns</th><th>Description</th></tr>
+        <tr><td class="method-name">.upper()</td><td class="method-ret">str</td><td class="method-desc">ALL CAPS</td></tr>
+        <tr><td class="method-name">.lower()</td><td class="method-ret">str</td><td class="method-desc">all lowercase</td></tr>
+        <tr><td class="method-name">.title()</td><td class="method-ret">str</td><td class="method-desc">First Letter Caps</td></tr>
+        <tr><td class="method-name">.capitalize()</td><td class="method-ret">str</td><td class="method-desc">First char cap only</td></tr>
+        <tr><td class="method-name">.swapcase()</td><td class="method-ret">str</td><td class="method-desc">Swap upper↔lower</td></tr>
+        <tr><td class="method-name">.find(sub)</td><td class="method-ret">int</td><td class="method-desc">Index of first match or -1</td></tr>
+        <tr><td class="method-name">.index(sub)</td><td class="method-ret">int</td><td class="method-desc">Like find but raises ValueError</td></tr>
+        <tr><td class="method-name">.count(sub)</td><td class="method-ret">int</td><td class="method-desc">Number of occurrences</td></tr>
+        <tr><td class="method-name">.startswith(s)</td><td class="method-ret">bool</td><td class="method-desc">Starts with prefix?</td></tr>
+        <tr><td class="method-name">.endswith(s)</td><td class="method-ret">bool</td><td class="method-desc">Ends with suffix?</td></tr>
+        <tr><td class="method-name">.rfind(sub)</td><td class="method-ret">int</td><td class="method-desc">Index of LAST match</td></tr>
+      </table>
+<pre><span class="cm"># Examples</span>
+s = <span class="st">"Hello World"</span>
+s.upper()            <span class="cm"># 'HELLO WORLD'</span>
+s.find(<span class="st">'o'</span>)          <span class="cm"># 4</span>
+s.rfind(<span class="st">'o'</span>)         <span class="cm"># 7</span>
+s.count(<span class="st">'l'</span>)         <span class="cm"># 3</span>
+s.startswith(<span class="st">'He'</span>)   <span class="cm"># True</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Strip, Replace & Split <span class="tag tag-yellow">methods</span></div>
+      <table>
+        <tr><th>Method</th><th>Returns</th><th>Description</th></tr>
+        <tr><td class="method-name">.strip()</td><td class="method-ret">str</td><td class="method-desc">Remove leading & trailing whitespace</td></tr>
+        <tr><td class="method-name">.lstrip()</td><td class="method-ret">str</td><td class="method-desc">Remove leading whitespace</td></tr>
+        <tr><td class="method-name">.rstrip()</td><td class="method-ret">str</td><td class="method-desc">Remove trailing whitespace</td></tr>
+        <tr><td class="method-name">.replace(old,new)</td><td class="method-ret">str</td><td class="method-desc">Replace all occurrences</td></tr>
+        <tr><td class="method-name">.replace(old,new,n)</td><td class="method-ret">str</td><td class="method-desc">Replace first n occurrences</td></tr>
+        <tr><td class="method-name">.split(sep)</td><td class="method-ret">list</td><td class="method-desc">Split into list by separator</td></tr>
+        <tr><td class="method-name">.rsplit(sep,n)</td><td class="method-ret">list</td><td class="method-desc">Split from right, max n splits</td></tr>
+        <tr><td class="method-name">.splitlines()</td><td class="method-ret">list</td><td class="method-desc">Split on newlines</td></tr>
+        <tr><td class="method-name">.join(iterable)</td><td class="method-ret">str</td><td class="method-desc">Join iterable with str as separator</td></tr>
+        <tr><td class="method-name">.partition(sep)</td><td class="method-ret">tuple</td><td class="method-desc">Split into (before, sep, after)</td></tr>
+      </table>
+<pre><span class="cm"># Examples</span>
+<span class="st">"  hello  "</span>.strip()          <span class="cm"># 'hello'</span>
+<span class="st">"a,b,c"</span>.split(<span class="st">','</span>)          <span class="cm"># ['a','b','c']</span>
+<span class="st">"-"</span>.join([<span class="st">'a'</span>,<span class="st">'b'</span>,<span class="st">'c'</span>])   <span class="cm"># 'a-b-c'</span>
+<span class="st">"hello world"</span>.replace(<span class="st">'l'</span>,<span class="st">'r'</span>) <span class="cm"># 'herro worrd'</span>
+<span class="st">"a::b::c"</span>.partition(<span class="st">'::'</span>)  <span class="cm"># ('a','::','b::c')</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Format & Align <span class="tag tag-yellow">formatting</span></div>
+<pre><span class="cm"># f-strings (Python 3.6+) — PREFERRED</span>
+name = <span class="st">"Alice"</span>
+score = <span class="nm">95.678</span>
+<span class="bl">print</span>(<span class="st">f"Name: {name}, Score: {score:.2f}"</span>)
+<span class="bl">print</span>(<span class="st">f"{name!r}"</span>)           <span class="cm"># repr()  →  'Alice'</span>
+<span class="bl">print</span>(<span class="st">f"{name!s}"</span>)           <span class="cm"># str()   →  Alice</span>
+<span class="bl">print</span>(<span class="st">f"{1000000:,}"</span>)        <span class="cm"># 1,000,000</span>
+<span class="bl">print</span>(<span class="st">f"{0.75:.1%}"</span>)         <span class="cm"># 75.0%</span>
+<span class="bl">print</span>(<span class="st">f"{42:08b}"</span>)           <span class="cm"># 00101010 (binary)</span>
+<span class="bl">print</span>(<span class="st">f"{255:#x}"</span>)           <span class="cm"># 0xff (hex)</span>
+
+<span class="cm"># Alignment</span>
+<span class="bl">print</span>(<span class="st">f"{'left':<span class="cm">{':<10}'</span>}")   <span class="cm"># 'left      '</span></span>
+<span class="bl">print</span>(<span class="st">f"{'right':>10}"</span>)       <span class="cm"># '     right'</span>
+<span class="bl">print</span>(<span class="st">f"{'center':^10}"</span>)      <span class="cm"># '  center  '</span>
+<span class="bl">print</span>(<span class="st">f"{'fill':*^10}"</span>)       <span class="cm"># '***fill***'</span>
+
+<span class="cm"># .format() method</span>
+<span class="st">"{} is {}"</span>.<span class="fn">format</span>(<span class="st">"Sky"</span>, <span class="st">"blue"</span>)
+<span class="st">"{name} is {age}"</span>.<span class="fn">format</span>(name=<span class="st">"Bob"</span>, age=<span class="nm">30</span>)</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Check Methods & Misc <span class="tag tag-yellow">validation</span></div>
+      <table>
+        <tr><th>Method</th><th>Returns</th><th>Description</th></tr>
+        <tr><td class="method-name">.isalpha()</td><td class="method-ret">bool</td><td class="method-desc">All chars alphabetic?</td></tr>
+        <tr><td class="method-name">.isdigit()</td><td class="method-ret">bool</td><td class="method-desc">All chars digits?</td></tr>
+        <tr><td class="method-name">.isnumeric()</td><td class="method-ret">bool</td><td class="method-desc">All chars numeric?</td></tr>
+        <tr><td class="method-name">.isalnum()</td><td class="method-ret">bool</td><td class="method-desc">All alpha or digit?</td></tr>
+        <tr><td class="method-name">.isspace()</td><td class="method-ret">bool</td><td class="method-desc">All whitespace?</td></tr>
+        <tr><td class="method-name">.isupper()</td><td class="method-ret">bool</td><td class="method-desc">All uppercase?</td></tr>
+        <tr><td class="method-name">.islower()</td><td class="method-ret">bool</td><td class="method-desc">All lowercase?</td></tr>
+        <tr><td class="method-name">.istitle()</td><td class="method-ret">bool</td><td class="method-desc">Title-cased?</td></tr>
+        <tr><td class="method-name">.zfill(w)</td><td class="method-ret">str</td><td class="method-desc">Pad with zeros on left</td></tr>
+        <tr><td class="method-name">.center(w,c)</td><td class="method-ret">str</td><td class="method-desc">Center with fill char</td></tr>
+        <tr><td class="method-name">.ljust(w,c)</td><td class="method-ret">str</td><td class="method-desc">Left-justify with fill</td></tr>
+        <tr><td class="method-name">.rjust(w,c)</td><td class="method-ret">str</td><td class="method-desc">Right-justify with fill</td></tr>
+        <tr><td class="method-name">.encode(enc)</td><td class="method-ret">bytes</td><td class="method-desc">Encode to bytes</td></tr>
+      </table>
+<pre><span class="st">"42"</span>.zfill(<span class="nm">5</span>)       <span class="cm"># '00042'</span>
+<span class="st">"hi"</span>.center(<span class="nm">8</span>,<span class="st">'*'</span>) <span class="cm"># '***hi***'</span>
+<span class="st">"abc"</span>.isalpha()    <span class="cm"># True</span>
+<span class="st">"hello"</span>.encode(<span class="st">'utf-8'</span>) <span class="cm"># b'hello'</span></pre>
+    </div>
+
+  </div><!-- /grid -->
+</div>
+
+<!-- ══════════════════════════════════════════════════════ NUMBERS -->
+<div id="numbers" class="section">
+  <div class="section-title"><span class="dot" style="background:var(--accent4)"></span>Numbers <span class="tag tag-red">int · float · complex</span></div>
+  <div class="section-sub"># Python auto-detects numeric type; int has unlimited precision</div>
+
+  <div class="grid grid-2">
+
+    <div class="card">
+      <div class="card-title">Types & Literals <span class="tag tag-red">types</span></div>
+<pre><span class="cm"># int — whole numbers, unlimited size</span>
+x = <span class="nm">42</span>
+big = <span class="nm">10_000_000</span>      <span class="cm"># underscores for readability</span>
+b = <span class="nm">0b1010</span>           <span class="cm"># binary  → 10</span>
+o = <span class="nm">0o17</span>             <span class="cm"># octal   → 15</span>
+h = <span class="nm">0xFF</span>             <span class="cm"># hex     → 255</span>
+
+<span class="cm"># float — 64-bit double precision</span>
+pi = <span class="nm">3.14159</span>
+sci = <span class="nm">2.5e-3</span>         <span class="cm"># 0.0025</span>
+inf = <span class="bl">float</span>(<span class="st">'inf'</span>)   <span class="cm"># infinity</span>
+nan = <span class="bl">float</span>(<span class="st">'nan'</span>)   <span class="cm"># Not a Number</span>
+
+<span class="cm"># complex — real + imaginary</span>
+c = <span class="nm">3</span> + <span class="nm">4j</span>
+c.real                <span class="cm"># 3.0</span>
+c.imag                <span class="cm"># 4.0</span>
+<span class="bl">abs</span>(c)               <span class="cm"># 5.0 (magnitude)</span>
+c.conjugate()         <span class="cm"># (3-4j)</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Arithmetic Operators <span class="tag tag-red">operators</span></div>
+<pre>a, b = <span class="nm">17</span>, <span class="nm">5</span>
+
+a + b    <span class="cm"># 22   addition</span>
+a - b    <span class="cm"># 12   subtraction</span>
+a * b    <span class="cm"># 85   multiplication</span>
+a / b    <span class="cm"># 3.4  true division (always float)</span>
+a // b   <span class="cm"># 3    floor division</span>
+a % b    <span class="cm"># 2    modulo (remainder)</span>
+a ** b   <span class="cm"># 1419857  exponentiation</span>
+-a       <span class="cm"># -17  unary negation</span>
+
+<span class="cm"># Augmented assignment</span>
+x = <span class="nm">10</span>
+x += <span class="nm">5</span>   <span class="cm"># x = 15</span>
+x -= <span class="nm">3</span>   <span class="cm"># x = 12</span>
+x *= <span class="nm">2</span>   <span class="cm"># x = 24</span>
+x //= <span class="nm">5</span>  <span class="cm"># x = 4</span>
+x **= <span class="nm">3</span>  <span class="cm"># x = 64</span>
+x %= <span class="nm">10</span>  <span class="cm"># x = 4</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Built-in Math Functions <span class="tag tag-red">builtins</span></div>
+      <table>
+        <tr><th>Function</th><th>Returns</th><th>Description</th></tr>
+        <tr><td class="method-name">abs(x)</td><td class="method-ret">num</td><td class="method-desc">Absolute value</td></tr>
+        <tr><td class="method-name">round(x, n)</td><td class="method-ret">num</td><td class="method-desc">Round to n decimal places</td></tr>
+        <tr><td class="method-name">pow(x, y)</td><td class="method-ret">num</td><td class="method-desc">x to the power y</td></tr>
+        <tr><td class="method-name">pow(x, y, z)</td><td class="method-ret">int</td><td class="method-desc">x**y % z (modular exp)</td></tr>
+        <tr><td class="method-name">divmod(a, b)</td><td class="method-ret">tuple</td><td class="method-desc">(quotient, remainder)</td></tr>
+        <tr><td class="method-name">max(a, b, ...)</td><td class="method-ret">num</td><td class="method-desc">Largest value</td></tr>
+        <tr><td class="method-name">min(a, b, ...)</td><td class="method-ret">num</td><td class="method-desc">Smallest value</td></tr>
+        <tr><td class="method-name">sum(iterable)</td><td class="method-ret">num</td><td class="method-desc">Sum all elements</td></tr>
+        <tr><td class="method-name">int(x)</td><td class="method-ret">int</td><td class="method-desc">Convert to integer (truncates)</td></tr>
+        <tr><td class="method-name">float(x)</td><td class="method-ret">float</td><td class="method-desc">Convert to float</td></tr>
+        <tr><td class="method-name">bin(n)</td><td class="method-ret">str</td><td class="method-desc">'0b...' binary representation</td></tr>
+        <tr><td class="method-name">hex(n)</td><td class="method-ret">str</td><td class="method-desc">'0x...' hex representation</td></tr>
+        <tr><td class="method-name">oct(n)</td><td class="method-ret">str</td><td class="method-desc">'0o...' octal representation</td></tr>
+      </table>
+<pre><span class="bl">abs</span>(-<span class="nm">7</span>)          <span class="cm"># 7</span>
+<span class="bl">round</span>(<span class="nm">3.14159</span>, <span class="nm">2</span>) <span class="cm"># 3.14</span>
+<span class="bl">divmod</span>(<span class="nm">17</span>, <span class="nm">5</span>)    <span class="cm"># (3, 2)</span>
+<span class="bl">bin</span>(<span class="nm">10</span>)           <span class="cm"># '0b1010'</span>
+<span class="bl">hex</span>(<span class="nm">255</span>)          <span class="cm"># '0xff'</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">math module <span class="tag tag-red">import</span></div>
+<pre><span class="kw">import</span> math
+
+math.sqrt(<span class="nm">16</span>)       <span class="cm"># 4.0</span>
+math.ceil(<span class="nm">3.2</span>)      <span class="cm"># 4   (round up)</span>
+math.floor(<span class="nm">3.9</span>)     <span class="cm"># 3   (round down)</span>
+math.trunc(<span class="nm">3.9</span>)     <span class="cm"># 3   (truncate)</span>
+math.factorial(<span class="nm">5</span>)   <span class="cm"># 120</span>
+math.gcd(<span class="nm">12</span>, <span class="nm">8</span>)     <span class="cm"># 4</span>
+math.lcm(<span class="nm">4</span>, <span class="nm">6</span>)      <span class="cm"># 12  (Python 3.9+)</span>
+math.log(<span class="nm">100</span>, <span class="nm">10</span>)  <span class="cm"># 2.0</span>
+math.log2(<span class="nm">8</span>)        <span class="cm"># 3.0</span>
+math.log10(<span class="nm">1000</span>)   <span class="cm"># 3.0</span>
+math.pi             <span class="cm"># 3.14159...</span>
+math.e              <span class="cm"># 2.71828...</span>
+math.inf            <span class="cm"># infinity</span>
+math.isnan(x)       <span class="cm"># check for NaN</span>
+math.isinf(x)       <span class="cm"># check for infinity</span>
+math.sin(<span class="nm">0</span>)         <span class="cm"># 0.0</span>
+math.cos(math.pi)   <span class="cm"># -1.0</span>
+math.degrees(<span class="nm">3.14</span>) <span class="cm"># ~179.9°</span>
+math.radians(<span class="nm">180</span>)  <span class="cm"># ~3.14</span>
+
+<span class="cm"># random module</span>
+<span class="kw">import</span> random
+random.random()           <span class="cm"># float 0.0–1.0</span>
+random.randint(<span class="nm">1</span>, <span class="nm">10</span>)    <span class="cm"># int between 1 and 10</span>
+random.choice([<span class="st">'a'</span>,<span class="st">'b'</span>]) <span class="cm"># random element</span>
+random.shuffle(lst)       <span class="cm"># shuffle list in-place</span>
+random.sample(lst, <span class="nm">3</span>)    <span class="cm"># 3 unique random elements</span></pre>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ LISTS -->
+<div id="lists" class="section">
+  <div class="section-title"><span class="dot" style="background:var(--accent2)"></span>Lists <span class="tag tag-green">list</span></div>
+  <div class="section-sub"># Ordered, mutable, allow duplicates — most used data structure</div>
+
+  <div class="grid grid-2">
+
+    <div class="card">
+      <div class="card-title">Creating & Accessing <span class="tag tag-green">basics</span></div>
+<pre><span class="cm"># Creating lists</span>
+empty = []
+nums = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>]
+mixed = [<span class="nm">1</span>, <span class="st">"hello"</span>, <span class="nm">3.14</span>, <span class="cn">True</span>]
+nested = [[<span class="nm">1</span>, <span class="nm">2</span>], [<span class="nm">3</span>, <span class="nm">4</span>], [<span class="nm">5</span>, <span class="nm">6</span>]]
+from_range = <span class="bl">list</span>(<span class="bl">range</span>(<span class="nm">1</span>, <span class="nm">6</span>))    <span class="cm"># [1,2,3,4,5]</span>
+from_str = <span class="bl">list</span>(<span class="st">"abc"</span>)            <span class="cm"># ['a','b','c']</span>
+
+<span class="cm"># Indexing & Slicing (same as strings)</span>
+lst = [<span class="nm">10</span>, <span class="nm">20</span>, <span class="nm">30</span>, <span class="nm">40</span>, <span class="nm">50</span>]
+lst[<span class="nm">0</span>]       <span class="cm"># 10</span>
+lst[-<span class="nm">1</span>]      <span class="cm"># 50</span>
+lst[<span class="nm">1</span>:<span class="nm">4</span>]     <span class="cm"># [20, 30, 40]</span>
+lst[::-<span class="nm">1</span>]    <span class="cm"># [50, 40, 30, 20, 10]</span>
+lst[<span class="nm">2</span>] = <span class="nm">99</span>  <span class="cm"># mutable! modify in place</span>
+
+<span class="cm"># Nested list access</span>
+nested[<span class="nm">1</span>][<span class="nm">0</span>] <span class="cm"># 3</span>
+
+<span class="cm"># Unpacking</span>
+a, b, c = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>]
+first, *rest = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>]    <span class="cm"># first=1, rest=[2,3,4]</span>
+*init, last = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>]    <span class="cm"># init=[1,2,3], last=4</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Mutating Methods <span class="tag tag-green">modify</span></div>
+      <table>
+        <tr><th>Method</th><th>Returns</th><th>Description</th></tr>
+        <tr><td class="method-name">.append(x)</td><td class="method-ret">None</td><td class="method-desc">Add x to end</td></tr>
+        <tr><td class="method-name">.insert(i, x)</td><td class="method-ret">None</td><td class="method-desc">Insert x at index i</td></tr>
+        <tr><td class="method-name">.extend(iter)</td><td class="method-ret">None</td><td class="method-desc">Add all items from iterable</td></tr>
+        <tr><td class="method-name">.remove(x)</td><td class="method-ret">None</td><td class="method-desc">Remove first occurrence of x</td></tr>
+        <tr><td class="method-name">.pop()</td><td class="method-ret">item</td><td class="method-desc">Remove & return last item</td></tr>
+        <tr><td class="method-name">.pop(i)</td><td class="method-ret">item</td><td class="method-desc">Remove & return item at index i</td></tr>
+        <tr><td class="method-name">.clear()</td><td class="method-ret">None</td><td class="method-desc">Remove all items</td></tr>
+        <tr><td class="method-name">.sort()</td><td class="method-ret">None</td><td class="method-desc">Sort in-place (ascending)</td></tr>
+        <tr><td class="method-name">.sort(reverse=True)</td><td class="method-ret">None</td><td class="method-desc">Sort descending in-place</td></tr>
+        <tr><td class="method-name">.reverse()</td><td class="method-ret">None</td><td class="method-desc">Reverse in-place</td></tr>
+      </table>
+<pre>lst = [<span class="nm">3</span>, <span class="nm">1</span>, <span class="nm">4</span>, <span class="nm">1</span>, <span class="nm">5</span>]
+lst.append(<span class="nm">9</span>)      <span class="cm"># [3,1,4,1,5,9]</span>
+lst.insert(<span class="nm">2</span>, <span class="nm">99</span>)   <span class="cm"># [3,1,99,4,1,5,9]</span>
+lst.remove(<span class="nm">1</span>)      <span class="cm"># removes FIRST 1</span>
+lst.pop()           <span class="cm"># removes & returns 9</span>
+lst.sort()          <span class="cm"># [1,1,3,4,5,99]</span>
+lst.sort(key=<span class="bl">abs</span>, reverse=<span class="cn">True</span>)</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Query Methods & Functions <span class="tag tag-green">query</span></div>
+<pre>lst = [<span class="nm">3</span>, <span class="nm">1</span>, <span class="nm">4</span>, <span class="nm">1</span>, <span class="nm">5</span>, <span class="nm">9</span>]
+
+lst.index(<span class="nm">4</span>)        <span class="cm"># 2  (index of first 4)</span>
+lst.count(<span class="nm">1</span>)        <span class="cm"># 2  (how many 1s)</span>
+lst.copy()          <span class="cm"># shallow copy</span>
+<span class="bl">len</span>(lst)             <span class="cm"># 6</span>
+<span class="bl">min</span>(lst)             <span class="cm"># 1</span>
+<span class="bl">max</span>(lst)             <span class="cm"># 9</span>
+<span class="bl">sum</span>(lst)             <span class="cm"># 23</span>
+<span class="bl">sorted</span>(lst)          <span class="cm"># returns NEW sorted list</span>
+<span class="bl">sorted</span>(lst, reverse=<span class="cn">True</span>) <span class="cm"># descending</span>
+<span class="bl">reversed</span>(lst)        <span class="cm"># iterator (use list() to see)</span>
+<span class="bl">enumerate</span>(lst)       <span class="cm"># (index, value) pairs</span>
+<span class="bl">zip</span>([<span class="nm">1</span>,<span class="nm">2</span>],[<span class="st">'a'</span>,<span class="st">'b'</span>]) <span class="cm"># [(1,'a'),(2,'b')]</span>
+<span class="nm">5</span> <span class="kw">in</span> lst             <span class="cm"># True</span>
+
+<span class="cm"># Flatten nested list</span>
+flat = [x <span class="kw">for</span> sub <span class="kw">in</span> nested <span class="kw">for</span> x <span class="kw">in</span> sub]</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">List Comprehensions <span class="tag tag-green">power feature</span></div>
+<pre><span class="cm"># Syntax: [expression for item in iterable if condition]</span>
+
+squares = [x**<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="bl">range</span>(<span class="nm">1</span>, <span class="nm">6</span>)]
+<span class="cm"># [1, 4, 9, 16, 25]</span>
+
+evens = [x <span class="kw">for</span> x <span class="kw">in</span> <span class="bl">range</span>(<span class="nm">10</span>) <span class="kw">if</span> x % <span class="nm">2</span> == <span class="nm">0</span>]
+<span class="cm"># [0, 2, 4, 6, 8]</span>
+
+pairs = [(x, y) <span class="kw">for</span> x <span class="kw">in</span> [<span class="nm">1</span>,<span class="nm">2</span>] <span class="kw">for</span> y <span class="kw">in</span> [<span class="nm">3</span>,<span class="nm">4</span>]]
+<span class="cm"># [(1,3),(1,4),(2,3),(2,4)]</span>
+
+words = [<span class="st">"hello"</span>, <span class="st">"world"</span>, <span class="st">"python"</span>]
+upper = [w.upper() <span class="kw">for</span> w <span class="kw">in</span> words]
+long_words = [w <span class="kw">for</span> w <span class="kw">in</span> words <span class="kw">if</span> <span class="bl">len</span>(w) > <span class="nm">4</span>]
+
+<span class="cm"># Conditional expression (ternary)</span>
+labels = [<span class="st">"even"</span> <span class="kw">if</span> x%<span class="nm">2</span>==<span class="nm">0</span> <span class="kw">else</span> <span class="st">"odd"</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="bl">range</span>(<span class="nm">5</span>)]
+<span class="cm"># ['even','odd','even','odd','even']</span>
+
+<span class="cm"># Nested list comprehension (matrix)</span>
+matrix = [[i*j <span class="kw">for</span> j <span class="kw">in</span> <span class="bl">range</span>(<span class="nm">1</span>,<span class="nm">4</span>)] <span class="kw">for</span> i <span class="kw">in</span> <span class="bl">range</span>(<span class="nm">1</span>,<span class="nm">4</span>)]
+
+<span class="cm"># map() and filter() alternatives</span>
+squares2 = <span class="bl">list</span>(<span class="bl">map</span>(<span class="kw">lambda</span> x: x**<span class="nm">2</span>, <span class="bl">range</span>(<span class="nm">6</span>)))
+evens2 = <span class="bl">list</span>(<span class="bl">filter</span>(<span class="kw">lambda</span> x: x%<span class="nm">2</span>==<span class="nm">0</span>, <span class="bl">range</span>(<span class="nm">10</span>)))</pre>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ TUPLES -->
+<div id="tuples" class="section">
+  <div class="section-title"><span class="dot" style="background:var(--accent3)"></span>Tuples <span class="tag tag-purple">tuple</span></div>
+  <div class="section-sub"># Ordered, IMMUTABLE, allow duplicates — use for fixed collections</div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">Creating & Accessing <span class="tag tag-purple">basics</span></div>
+<pre><span class="cm"># Creating tuples</span>
+empty = ()
+single = (<span class="nm">42</span>,)            <span class="cm"># MUST have trailing comma!</span>
+coords = (<span class="nm">10.5</span>, <span class="nm">20.3</span>)
+person = (<span class="st">"Alice"</span>, <span class="nm">30</span>, <span class="st">"NYC"</span>)
+nested = ((<span class="nm">1</span>,<span class="nm">2</span>), (<span class="nm">3</span>,<span class="nm">4</span>))
+from_list = <span class="bl">tuple</span>([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>])
+
+<span class="cm"># Packing (parentheses optional)</span>
+point = <span class="nm">3</span>, <span class="nm">4</span>             <span class="cm"># tuple packing</span>
+x, y = point             <span class="cm"># tuple unpacking</span>
+a, b, c = <span class="st">"abc"</span>         <span class="cm"># works on any iterable</span>
+
+<span class="cm"># Access (same as lists)</span>
+person[<span class="nm">0</span>]    <span class="cm"># 'Alice'</span>
+person[-<span class="nm">1</span>]   <span class="cm"># 'NYC'</span>
+person[<span class="nm">1</span>:]   <span class="cm"># (30, 'NYC')</span>
+
+<span class="cm"># CAN'T do: person[0] = "Bob"  ← TypeError!</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Methods & Use Cases <span class="tag tag-purple">usage</span></div>
+<pre><span class="cm"># Tuple only has 2 methods</span>
+t = (<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">2</span>, <span class="nm">4</span>)
+t.count(<span class="nm">2</span>)   <span class="cm"># 2  — count occurrences</span>
+t.index(<span class="nm">3</span>)   <span class="cm"># 2  — first index of value</span>
+<span class="bl">len</span>(t)        <span class="cm"># 5</span>
+
+<span class="cm"># Convert between list and tuple</span>
+lst = <span class="bl">list</span>(t)    <span class="cm"># to list (mutable)</span>
+t2 = <span class="bl">tuple</span>(lst) <span class="cm"># back to tuple</span>
+
+<span class="cm"># Why use tuples?</span>
+<span class="cm"># 1. Hashable → can be dict keys / set members</span>
+d = {(<span class="nm">0</span>,<span class="nm">0</span>): <span class="st">"origin"</span>, (<span class="nm">1</span>,<span class="nm">0</span>): <span class="st">"east"</span>}
+
+<span class="cm"># 2. Multiple return values</span>
+<span class="kw">def</span> <span class="fn">divmod_example</span>(a, b):
+    <span class="kw">return</span> a // b, a % b   <span class="cm"># returns tuple</span>
+q, r = divmod_example(<span class="nm">17</span>, <span class="nm">5</span>)
+
+<span class="cm"># 3. Named tuples (better readable)</span>
+<span class="kw">from</span> collections <span class="kw">import</span> namedtuple
+Point = namedtuple(<span class="st">'Point'</span>, [<span class="st">'x'</span>, <span class="st">'y'</span>])
+p = Point(<span class="nm">3</span>, <span class="nm">4</span>)
+p.x         <span class="cm"># 3</span>
+p.y         <span class="cm"># 4</span>
+p._asdict() <span class="cm"># {'x':3, 'y':4}</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ DICTS -->
+<div id="dicts" class="section">
+  <div class="section-title"><span class="dot" style="background:var(--accent5)"></span>Dictionaries <span class="tag tag-blue">dict</span></div>
+  <div class="section-sub"># Key-value pairs, ordered (Python 3.7+), mutable, keys must be hashable</div>
+
+  <div class="grid grid-2">
+
+    <div class="card">
+      <div class="card-title">Creating Dictionaries <span class="tag tag-blue">basics</span></div>
+<pre><span class="cm"># Several ways to create</span>
+empty = {}
+person = {<span class="st">"name"</span>: <span class="st">"Alice"</span>, <span class="st">"age"</span>: <span class="nm">30</span>, <span class="st">"city"</span>: <span class="st">"NYC"</span>}
+
+<span class="cm"># dict() constructor</span>
+d1 = <span class="bl">dict</span>(name=<span class="st">"Bob"</span>, age=<span class="nm">25</span>)
+d2 = <span class="bl">dict</span>([(<span class="st">"a"</span>, <span class="nm">1</span>), (<span class="st">"b"</span>, <span class="nm">2</span>)])
+
+<span class="cm"># Dict comprehension</span>
+squares = {x: x**<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="bl">range</span>(<span class="nm">1</span>, <span class="nm">6</span>)}
+<span class="cm"># {1:1, 2:4, 3:9, 4:16, 5:25}</span>
+
+<span class="cm"># fromkeys — create with default value</span>
+keys = [<span class="st">'a'</span>, <span class="st">'b'</span>, <span class="st">'c'</span>]
+defaults = <span class="bl">dict</span>.fromkeys(keys, <span class="nm">0</span>)  <span class="cm"># {'a':0,'b':0,'c':0}</span>
+
+<span class="cm"># Accessing values</span>
+person[<span class="st">"name"</span>]          <span class="cm"># "Alice" (KeyError if missing)</span>
+person.get(<span class="st">"age"</span>)       <span class="cm"># 30</span>
+person.get(<span class="st">"job"</span>, <span class="st">"N/A"</span>) <span class="cm"># "N/A" (safe, no error)</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Modifying Dictionaries <span class="tag tag-blue">modify</span></div>
+<pre>d = {<span class="st">"a"</span>: <span class="nm">1</span>, <span class="st">"b"</span>: <span class="nm">2</span>, <span class="st">"c"</span>: <span class="nm">3</span>}
+
+<span class="cm"># Add / Update</span>
+d[<span class="st">"d"</span>] = <span class="nm">4</span>              <span class="cm"># add new key</span>
+d[<span class="st">"a"</span>] = <span class="nm">99</span>             <span class="cm"># update existing</span>
+d.update({<span class="st">"e"</span>: <span class="nm">5</span>, <span class="st">"f"</span>: <span class="nm">6</span>})  <span class="cm"># merge in multiple</span>
+d.update(g=<span class="nm">7</span>)           <span class="cm"># keyword syntax</span>
+d.setdefault(<span class="st">"h"</span>, <span class="nm">0</span>)    <span class="cm"># set only if key absent</span>
+
+<span class="cm"># Delete</span>
+<span class="kw">del</span> d[<span class="st">"b"</span>]              <span class="cm"># remove key (KeyError if absent)</span>
+val = d.pop(<span class="st">"c"</span>)        <span class="cm"># remove & return value</span>
+val = d.pop(<span class="st">"z"</span>, <span class="cn">None</span>)  <span class="cm"># safe pop with default</span>
+k, v = d.popitem()      <span class="cm"># remove & return last pair</span>
+d.clear()               <span class="cm"># empty the dict</span>
+
+<span class="cm"># Merge dicts (Python 3.9+)</span>
+merged = {<span class="st">"a"</span>:<span class="nm">1</span>} | {<span class="st">"b"</span>:<span class="nm">2</span>}    <span class="cm"># {'a':1,'b':2}</span>
+d |= {<span class="st">"c"</span>: <span class="nm">3</span>}               <span class="cm"># in-place merge</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Iterating Dictionaries <span class="tag tag-blue">iteration</span></div>
+<pre>d = {<span class="st">"name"</span>: <span class="st">"Alice"</span>, <span class="st">"age"</span>: <span class="nm">30</span>, <span class="st">"city"</span>: <span class="st">"NYC"</span>}
+
+<span class="cm"># Keys (default iteration)</span>
+<span class="kw">for</span> key <span class="kw">in</span> d:
+    <span class="bl">print</span>(key)
+
+<span class="cm"># Values</span>
+<span class="kw">for</span> val <span class="kw">in</span> d.values():
+    <span class="bl">print</span>(val)
+
+<span class="cm"># Key-Value pairs</span>
+<span class="kw">for</span> key, val <span class="kw">in</span> d.items():
+    <span class="bl">print</span>(<span class="st">f"{key}: {val}"</span>)
+
+<span class="cm"># Check membership</span>
+<span class="st">"name"</span> <span class="kw">in</span> d           <span class="cm"># True (checks keys)</span>
+<span class="st">"Alice"</span> <span class="kw">in</span> d.values() <span class="cm"># True</span>
+
+<span class="cm"># Convert to list</span>
+<span class="bl">list</span>(d.keys())    <span class="cm"># ['name','age','city']</span>
+<span class="bl">list</span>(d.values())  <span class="cm"># ['Alice', 30, 'NYC']</span>
+<span class="bl">list</span>(d.items())   <span class="cm"># [('name','Alice'),...]</span>
+
+<span class="cm"># Sorting by key or value</span>
+<span class="bl">sorted</span>(d.items(), key=<span class="kw">lambda</span> x: x[<span class="nm">0</span>]) <span class="cm"># by key</span>
+<span class="bl">sorted</span>(d.items(), key=<span class="kw">lambda</span> x: x[<span class="nm">1</span>]) <span class="cm"># by value</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">defaultdict & Counter <span class="tag tag-blue">collections</span></div>
+<pre><span class="kw">from</span> collections <span class="kw">import</span> defaultdict, Counter, OrderedDict
+
+<span class="cm"># defaultdict — auto-create missing keys</span>
+dd = defaultdict(<span class="bl">list</span>)
+dd[<span class="st">"fruits"</span>].append(<span class="st">"apple"</span>)  <span class="cm"># no KeyError!</span>
+dd[<span class="st">"fruits"</span>].append(<span class="st">"banana"</span>)
+
+dd2 = defaultdict(<span class="bl">int</span>)         <span class="cm"># default value = 0</span>
+<span class="kw">for</span> ch <span class="kw">in</span> <span class="st">"hello"</span>:
+    dd2[ch] += <span class="nm">1</span>               <span class="cm"># count characters</span>
+
+<span class="cm"># Counter — count elements</span>
+c = Counter(<span class="st">"abracadabra"</span>)
+<span class="cm"># Counter({'a':5,'b':2,'r':2,'c':1,'d':1})</span>
+c.most_common(<span class="nm">2</span>)   <span class="cm"># [('a',5),('b',2)]</span>
+c.total()          <span class="cm"># 11 (Python 3.10+)</span>
+c[<span class="st">'a'</span>]             <span class="cm"># 5</span>
+c[<span class="st">'z'</span>]             <span class="cm"># 0 (no KeyError)</span>
+
+words = [<span class="st">"cat"</span>,<span class="st">"dog"</span>,<span class="st">"cat"</span>,<span class="st">"fish"</span>]
+wc = Counter(words)
+<span class="cm"># Counter({'cat':2,'dog':1,'fish':1})</span></pre>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ SETS -->
+<div id="sets" class="section">
+  <div class="section-title"><span class="dot" style="background:var(--accent2)"></span>Sets <span class="tag tag-green">set · frozenset</span></div>
+  <div class="section-sub"># Unordered, unique elements, mutable (frozenset = immutable set)</div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">Creating & Basic Operations <span class="tag tag-green">basics</span></div>
+<pre><span class="cm"># Creating sets</span>
+empty = <span class="bl">set</span>()           <span class="cm"># NOT {} — that's a dict!</span>
+s = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>}
+from_list = <span class="bl">set</span>([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">2</span>,<span class="nm">3</span>])  <span class="cm"># {1, 2, 3} deduped!</span>
+from_str = <span class="bl">set</span>(<span class="st">"hello"</span>)       <span class="cm"># {'h','e','l','o'}</span>
+frozen = <span class="bl">frozenset</span>({<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>})   <span class="cm"># immutable</span>
+
+<span class="cm"># Set comprehension</span>
+sq_set = {x**<span class="nm">2</span> <span class="kw">for</span> x <span class="kw">in</span> <span class="bl">range</span>(<span class="nm">5</span>)}  <span class="cm"># {0,1,4,9,16}</span>
+
+<span class="cm"># Mutating operations</span>
+s.add(<span class="nm">6</span>)              <span class="cm"># add one element</span>
+s.update([<span class="nm">7</span>, <span class="nm">8</span>, <span class="nm">9</span>])   <span class="cm"># add multiple</span>
+s.discard(<span class="nm">10</span>)         <span class="cm"># remove if present (no error)</span>
+s.remove(<span class="nm">5</span>)           <span class="cm"># remove (KeyError if absent)</span>
+s.pop()               <span class="cm"># remove & return arbitrary element</span>
+s.clear()             <span class="cm"># empty the set</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Set Operations <span class="tag tag-green">math</span></div>
+<pre>A = {<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>}
+B = {<span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>, <span class="nm">7</span>, <span class="nm">8</span>}
+
+<span class="cm"># Union — all elements from both</span>
+A | B  == A.union(B)          <span class="cm"># {1,2,3,4,5,6,7,8}</span>
+
+<span class="cm"># Intersection — elements in BOTH</span>
+A & B  == A.intersection(B)   <span class="cm"># {4, 5}</span>
+
+<span class="cm"># Difference — in A but NOT in B</span>
+A - B  == A.difference(B)     <span class="cm"># {1, 2, 3}</span>
+
+<span class="cm"># Symmetric difference — in A or B but NOT both</span>
+A ^ B  == A.symmetric_difference(B)  <span class="cm"># {1,2,3,6,7,8}</span>
+
+<span class="cm"># Subset / Superset</span>
+{<span class="nm">1</span>,<span class="nm">2</span>}.issubset(A)      <span class="cm"># True  ({1,2} ⊆ A)</span>
+A.issuperset({<span class="nm">1</span>,<span class="nm">2</span>})   <span class="cm"># True  (A ⊇ {1,2})</span>
+A.isdisjoint({<span class="nm">9</span>,<span class="nm">10</span>}) <span class="cm"># True  (no common elements)</span>
+
+<span class="cm"># In-place variants</span>
+A |= B  <span class="cm"># A.update(B)</span>
+A &= B  <span class="cm"># A.intersection_update(B)</span>
+A -= B  <span class="cm"># A.difference_update(B)</span>
+
+<span class="cm"># Remove duplicates from a list</span>
+lst = [<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">3</span>,<span class="nm">4</span>]
+unique = <span class="bl">list</span>(<span class="bl">set</span>(lst))  <span class="cm"># [1,2,3,4] (order may vary)</span></pre>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ BOOLEANS -->
+<div id="booleans" class="section">
+  <div class="section-title"><span class="dot" style="background:var(--accent4)"></span>Booleans & None <span class="tag tag-red">bool · NoneType</span></div>
+  <div class="section-sub"># bool is a subclass of int; True==1, False==0</div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-title">Boolean Logic <span class="tag tag-red">bool</span></div>
+<pre><span class="cm"># Literals</span>
+<span class="cn">True</span>   <span class="cm"># 1</span>
+<span class="cn">False</span>  <span class="cm"># 0</span>
+
+<span class="cm"># Logical operators</span>
+<span class="cn">True</span> <span class="kw">and</span> <span class="cn">False</span>  <span class="cm"># False</span>
+<span class="cn">True</span> <span class="kw">or</span> <span class="cn">False</span>   <span class="cm"># True</span>
+<span class="kw">not</span> <span class="cn">True</span>         <span class="cm"># False</span>
+
+<span class="cm"># Comparison operators</span>
+<span class="nm">5</span> == <span class="nm">5</span>           <span class="cm"># True  (equality)</span>
+<span class="nm">5</span> != <span class="nm">3</span>           <span class="cm"># True  (inequality)</span>
+<span class="nm">5</span> > <span class="nm">3</span>            <span class="cm"># True</span>
+<span class="nm">5</span> >= <span class="nm">5</span>           <span class="cm"># True</span>
+<span class="nm">3</span> < <span class="nm">5</span>            <span class="cm"># True</span>
+<span class="nm">3</span> <= <span class="nm">5</span>           <span class="cm"># True</span>
+<span class="nm">5</span> <span class="kw">is</span> <span class="nm">5</span>           <span class="cm"># True (identity)</span>
+[] <span class="kw">is</span> <span class="kw">not</span> <span class="cn">None</span>  <span class="cm"># True</span>
+
+<span class="cm"># Chained comparisons</span>
+<span class="nm">1</span> < <span class="nm">5</span> < <span class="nm">10</span>       <span class="cm"># True (Pythonic!)</span>
+<span class="nm">0</span> <= x <= <span class="nm">100</span>   <span class="cm"># True if x in range</span>
+
+<span class="cm"># bool() converts anything</span>
+<span class="bl">bool</span>(<span class="nm">0</span>)      <span class="cm"># False</span>
+<span class="bl">bool</span>(<span class="st">""</span>)     <span class="cm"># False</span>
+<span class="bl">bool</span>([])     <span class="cm"># False</span>
+<span class="bl">bool</span>(<span class="cn">None</span>)   <span class="cm"># False</span>
+<span class="bl">bool</span>(<span class="nm">1</span>)      <span class="cm"># True</span>
+<span class="bl">bool</span>(<span class="st">"hi"</span>)  <span class="cm"># True</span>
+<span class="bl">bool</span>([<span class="nm">0</span>])   <span class="cm"># True (non-empty list)</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">None & Short-circuit Evaluation <span class="tag tag-red">NoneType</span></div>
+<pre><span class="cm"># None — represents "nothing" / absence of value</span>
+x = <span class="cn">None</span>
+x <span class="kw">is</span> <span class="cn">None</span>          <span class="cm"># True  ← preferred check</span>
+x == <span class="cn">None</span>          <span class="cm"># True (works but use 'is')</span>
+<span class="bl">type</span>(<span class="cn">None</span>)          <span class="cm"># &lt;class 'NoneType'&gt;</span>
+
+<span class="kw">def</span> <span class="fn">greet</span>(name=<span class="cn">None</span>):
+    <span class="kw">if</span> name <span class="kw">is</span> <span class="cn">None</span>:
+        <span class="kw">return</span> <span class="st">"Hello, stranger!"</span>
+    <span class="kw">return</span> <span class="st">f"Hello, {name}!"</span>
+
+<span class="cm"># Short-circuit evaluation</span>
+<span class="cm"># 'and' returns first falsy OR last value</span>
+<span class="nm">0</span> <span class="kw">and</span> <span class="st">"hello"</span>   <span class="cm"># 0       (short-circuits)</span>
+<span class="nm">1</span> <span class="kw">and</span> <span class="st">"hello"</span>   <span class="cm"># "hello" (evaluates both)</span>
+
+<span class="cm"># 'or' returns first truthy OR last value</span>
+<span class="nm">0</span> <span class="kw">or</span> <span class="st">"hello"</span>    <span class="cm"># "hello"</span>
+<span class="st">""</span> <span class="kw">or</span> <span class="st">"default"</span> <span class="cm"># "default"</span>
+<span class="st">"hi"</span> <span class="kw">or</span> <span class="st">"bye"</span>   <span class="cm"># "hi"</span>
+
+<span class="cm"># Common patterns</span>
+name = user_input <span class="kw">or</span> <span class="st">"Anonymous"</span>
+result = data <span class="kw">and</span> data[<span class="nm">0</span>]  <span class="cm"># safe indexing</span>
+
+<span class="cm"># Falsy values (evaluate to False)</span>
+<span class="cm"># None, False, 0, 0.0, 0j, "", [], {}, set(), ()</span></pre>
+      <div class="tip-box"><strong>💡 Tip:</strong> Always use <span class="ic">is None</span> or <span class="ic">is not None</span> to check for None, never <span class="ic">== None</span>.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ JSON -->
+<div id="json" class="section">
+  <div class="section-title"><span class="dot" style="background:var(--accent)"></span>JSON Handling <span class="tag tag-yellow">import json</span></div>
+  <div class="section-sub"># JSON = JavaScript Object Notation — universal data exchange format</div>
+
+  <div class="grid grid-2">
+
+    <div class="card">
+      <div class="card-title">Type Mapping <span class="tag tag-yellow">conversion</span></div>
+      <table>
+        <tr><th>Python Type</th><th>→</th><th>JSON Type</th></tr>
+        <tr><td class="method-name">dict</td><td>→</td><td class="method-ret">object {}</td></tr>
+        <tr><td class="method-name">list, tuple</td><td>→</td><td class="method-ret">array []</td></tr>
+        <tr><td class="method-name">str</td><td>→</td><td class="method-ret">string ""</td></tr>
+        <tr><td class="method-name">int, float</td><td>→</td><td class="method-ret">number</td></tr>
+        <tr><td class="method-name">True / False</td><td>→</td><td class="method-ret">true / false</td></tr>
+        <tr><td class="method-name">None</td><td>→</td><td class="method-ret">null</td></tr>
+      </table>
+      <div class="info-box"><strong>Note:</strong> tuples become JSON arrays and come back as Python lists. JSON keys must be strings.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Core Functions <span class="tag tag-yellow">api</span></div>
+<pre><span class="kw">import</span> json
+
+<span class="cm"># ── Encoding (Python → JSON string) ──</span>
+data = {<span class="st">"name"</span>: <span class="st">"Alice"</span>, <span class="st">"scores"</span>: [<span class="nm">95</span>, <span class="nm">87</span>], <span class="st">"active"</span>: <span class="cn">True</span>}
+json_str = json.dumps(data)
+<span class="cm"># '{"name": "Alice", "scores": [95, 87], "active": true}'</span>
+
+<span class="cm"># Pretty-print with indent</span>
+pretty = json.dumps(data, indent=<span class="nm">4</span>)
+pretty_sorted = json.dumps(data, indent=<span class="nm">2</span>, sort_keys=<span class="cn">True</span>)
+
+<span class="cm"># ── Decoding (JSON string → Python) ──</span>
+json_text = <span class="st">'{"name":"Bob","age":25,"tags":["dev","python"]}'</span>
+parsed = json.loads(json_text)
+parsed[<span class="st">"name"</span>]   <span class="cm"># "Bob"</span>
+parsed[<span class="st">"tags"</span>]   <span class="cm"># ["dev", "python"]</span>
+
+<span class="cm"># ── File I/O ──</span>
+<span class="cm"># Write JSON to file</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"data.json"</span>, <span class="st">"w"</span>) <span class="kw">as</span> f:
+    json.dump(data, f, indent=<span class="nm">4</span>)
+
+<span class="cm"># Read JSON from file</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"data.json"</span>, <span class="st">"r"</span>) <span class="kw">as</span> f:
+    loaded = json.load(f)</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Advanced Options <span class="tag tag-yellow">options</span></div>
+<pre><span class="kw">import</span> json
+
+<span class="cm"># Handle non-ASCII characters</span>
+d = {<span class="st">"city"</span>: <span class="st">"München"</span>}
+json.dumps(d)                        <span class="cm"># "M\\u00fcnchen"</span>
+json.dumps(d, ensure_ascii=<span class="cn">False</span>)   <span class="cm"># "München" ✓</span>
+
+<span class="cm"># Compact encoding (no spaces)</span>
+json.dumps(d, separators=(<span class="st">','</span>, <span class="st">':'</span>))
+
+<span class="cm"># Custom encoder for unsupported types</span>
+<span class="kw">from</span> datetime <span class="kw">import</span> date
+
+<span class="kw">class</span> <span class="fn">DateEncoder</span>(json.JSONEncoder):
+    <span class="kw">def</span> <span class="fn">default</span>(self, obj):
+        <span class="kw">if</span> <span class="bl">isinstance</span>(obj, date):
+            <span class="kw">return</span> obj.isoformat()
+        <span class="kw">return</span> <span class="bl">super</span>().default(obj)
+
+payload = {<span class="st">"date"</span>: date(<span class="nm">2025</span>, <span class="nm">1</span>, <span class="nm">15</span>)}
+json.dumps(payload, cls=DateEncoder)
+<span class="cm"># '{"date": "2025-01-15"}'</span>
+
+<span class="cm"># Error handling</span>
+<span class="kw">try</span>:
+    result = json.loads(<span class="st">"invalid json{"</span>)
+<span class="kw">except</span> json.JSONDecodeError <span class="kw">as</span> e:
+    <span class="bl">print</span>(<span class="st">f"JSON Error: {e.msg} at line {e.lineno}"</span>)</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Real-world Patterns <span class="tag tag-yellow">examples</span></div>
+<pre><span class="kw">import</span> json, os
+
+<span class="cm"># ── Config file pattern ──</span>
+<span class="kw">def</span> <span class="fn">load_config</span>(path=<span class="st">"config.json"</span>):
+    defaults = {<span class="st">"debug"</span>: <span class="cn">False</span>, <span class="st">"port"</span>: <span class="nm">8080</span>}
+    <span class="kw">if</span> os.path.exists(path):
+        <span class="kw">with</span> <span class="bl">open</span>(path) <span class="kw">as</span> f:
+            <span class="kw">return</span> {**defaults, **json.load(f)}
+    <span class="kw">return</span> defaults
+
+<span class="cm"># ── Safe JSON parse (API response) ──</span>
+<span class="kw">def</span> <span class="fn">safe_parse</span>(text):
+    <span class="kw">try</span>:
+        <span class="kw">return</span> json.loads(text), <span class="cn">None</span>
+    <span class="kw">except</span> json.JSONDecodeError <span class="kw">as</span> e:
+        <span class="kw">return</span> <span class="cn">None</span>, <span class="bl">str</span>(e)
+
+<span class="cm"># ── Nested data navigation ──</span>
+api_response = <span class="st">"""
+{"user": {"profile": {"name": "Alice", "age": 30}}}
+"""</span>
+data = json.loads(api_response)
+name = data.get(<span class="st">"user"</span>, {}).get(<span class="st">"profile"</span>, {}).get(<span class="st">"name"</span>)
+
+<span class="cm"># ── Pretty print any JSON ──</span>
+<span class="kw">def</span> <span class="fn">pprint_json</span>(data):
+    <span class="bl">print</span>(json.dumps(data, indent=<span class="nm">2</span>, ensure_ascii=<span class="cn">False</span>))</pre>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ FILES -->
+<div id="files" class="section">
+  <div class="section-title"><span class="dot" style="background:var(--accent3)"></span>File Handling <span class="tag tag-purple">open · read · write</span></div>
+  <div class="section-sub"># Always use 'with' statement — auto-closes file even on errors</div>
+
+  <div class="grid grid-2">
+
+    <div class="card">
+      <div class="card-title">File Modes Reference <span class="tag tag-purple">modes</span></div>
+      <table>
+        <tr><th>Mode</th><th>Description</th></tr>
+        <tr><td class="method-name">'r'</td><td class="method-desc">Read (default). Error if file doesn't exist.</td></tr>
+        <tr><td class="method-name">'w'</td><td class="method-desc">Write. Creates file, OVERWRITES if exists.</td></tr>
+        <tr><td class="method-name">'a'</td><td class="method-desc">Append. Creates file, adds to end if exists.</td></tr>
+        <tr><td class="method-name">'x'</td><td class="method-desc">Exclusive create. Error if file already exists.</td></tr>
+        <tr><td class="method-name">'r+'</td><td class="method-desc">Read + Write. File must exist.</td></tr>
+        <tr><td class="method-name">'w+'</td><td class="method-desc">Write + Read. Truncates file.</td></tr>
+        <tr><td class="method-name">'a+'</td><td class="method-desc">Append + Read.</td></tr>
+        <tr><td class="method-name">'b'</td><td class="method-desc">Binary mode. Combine: 'rb', 'wb', 'ab'</td></tr>
+        <tr><td class="method-name">'t'</td><td class="method-desc">Text mode (default). Combine: 'rt', 'wt'</td></tr>
+      </table>
+      <div class="warn-box"><strong>⚠️ Warning:</strong> 'w' mode erases all existing content! Use 'a' to append.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Reading Files <span class="tag tag-purple">read</span></div>
+<pre><span class="cm"># Read entire file as one string</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"notes.txt"</span>, <span class="st">"r"</span>, encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    content = f.read()       <span class="cm"># full string</span>
+
+<span class="cm"># Read all lines into a list</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"notes.txt"</span>) <span class="kw">as</span> f:
+    lines = f.readlines()    <span class="cm"># ['\n' included]</span>
+    clean = [l.strip() <span class="kw">for</span> l <span class="kw">in</span> lines]
+
+<span class="cm"># Read one line at a time (memory efficient)</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"large.txt"</span>) <span class="kw">as</span> f:
+    first = f.readline()     <span class="cm"># read one line</span>
+
+<span class="cm"># BEST: iterate line by line (memory-friendly)</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"notes.txt"</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> line <span class="kw">in</span> f:
+        <span class="bl">print</span>(line.strip())
+
+<span class="cm"># Read with position control</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"data.bin"</span>, <span class="st">"rb"</span>) <span class="kw">as</span> f:
+    f.seek(<span class="nm">10</span>)        <span class="cm"># jump to byte 10</span>
+    chunk = f.read(<span class="nm">5</span>) <span class="cm"># read 5 bytes</span>
+    pos = f.tell()    <span class="cm"># current position</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Writing Files <span class="tag tag-purple">write</span></div>
+<pre><span class="cm"># Write string to file (overwrites!)</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"output.txt"</span>, <span class="st">"w"</span>, encoding=<span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">"Hello, World!\n"</span>)
+    f.write(<span class="st">"Second line\n"</span>)
+
+<span class="cm"># Write multiple lines at once</span>
+lines = [<span class="st">"line 1"</span>, <span class="st">"line 2"</span>, <span class="st">"line 3"</span>]
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"output.txt"</span>, <span class="st">"w"</span>) <span class="kw">as</span> f:
+    f.writelines(line + <span class="st">"\n"</span> <span class="kw">for</span> line <span class="kw">in</span> lines)
+
+<span class="cm"># Append to existing file</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"log.txt"</span>, <span class="st">"a"</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">"[INFO] New log entry\n"</span>)
+
+<span class="cm"># Write with print() (handy!)</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"out.txt"</span>, <span class="st">"w"</span>) <span class="kw">as</span> f:
+    <span class="bl">print</span>(<span class="st">"Hello"</span>, <span class="st">"World"</span>, file=f)
+    <span class="bl">print</span>(<span class="st">"Number:"</span>, <span class="nm">42</span>, file=f)
+
+<span class="cm"># Write binary file</span>
+data = b<span class="st">'\x00\x01\x02\x03'</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"data.bin"</span>, <span class="st">"wb"</span>) <span class="kw">as</span> f:
+    f.write(data)</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">CSV Files <span class="tag tag-purple">csv module</span></div>
+<pre><span class="kw">import</span> csv
+
+<span class="cm"># ── Read CSV ──</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"students.csv"</span>, <span class="st">"r"</span>, newline=<span class="st">""</span>) <span class="kw">as</span> f:
+    reader = csv.reader(f)
+    header = <span class="bl">next</span>(reader)      <span class="cm"># skip header row</span>
+    <span class="kw">for</span> row <span class="kw">in</span> reader:
+        <span class="bl">print</span>(row)             <span class="cm"># each row is a list</span>
+
+<span class="cm"># DictReader — rows as dicts</span>
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"students.csv"</span>, newline=<span class="st">""</span>) <span class="kw">as</span> f:
+    reader = csv.DictReader(f)
+    <span class="kw">for</span> row <span class="kw">in</span> reader:
+        <span class="bl">print</span>(row[<span class="st">"name"</span>], row[<span class="st">"grade"</span>])
+
+<span class="cm"># ── Write CSV ──</span>
+data = [[<span class="st">"name"</span>,<span class="st">"age"</span>],[<span class="st">"Alice"</span>,<span class="nm">30</span>],[<span class="st">"Bob"</span>,<span class="nm">25</span>]]
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"out.csv"</span>, <span class="st">"w"</span>, newline=<span class="st">""</span>) <span class="kw">as</span> f:
+    writer = csv.writer(f)
+    writer.writerows(data)
+
+<span class="cm"># DictWriter</span>
+fields = [<span class="st">"name"</span>, <span class="st">"age"</span>]
+rows = [{<span class="st">"name"</span>:<span class="st">"Alice"</span>,<span class="st">"age"</span>:<span class="nm">30</span>}]
+<span class="kw">with</span> <span class="bl">open</span>(<span class="st">"out.csv"</span>, <span class="st">"w"</span>, newline=<span class="st">""</span>) <span class="kw">as</span> f:
+    w = csv.DictWriter(f, fieldnames=fields)
+    w.writeheader()
+    w.writerows(rows)</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">os & pathlib — File System <span class="tag tag-purple">paths</span></div>
+<pre><span class="kw">import</span> os
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="cm"># ── os module ──</span>
+os.getcwd()                  <span class="cm"># current directory</span>
+os.chdir(<span class="st">"/home/user"</span>)       <span class="cm"># change directory</span>
+os.listdir(<span class="st">"."</span>)             <span class="cm"># list files in dir</span>
+os.path.exists(<span class="st">"file.txt"</span>)  <span class="cm"># check if exists</span>
+os.path.isfile(<span class="st">"f.txt"</span>)     <span class="cm"># is it a file?</span>
+os.path.isdir(<span class="st">"folder"</span>)     <span class="cm"># is it a directory?</span>
+os.path.join(<span class="st">"dir"</span>, <span class="st">"f.txt"</span>) <span class="cm"># safe path joining</span>
+os.path.basename(<span class="st">"/a/b/c.txt"</span>) <span class="cm"># 'c.txt'</span>
+os.path.dirname(<span class="st">"/a/b/c.txt"</span>)  <span class="cm"># '/a/b'</span>
+os.path.splitext(<span class="st">"f.txt"</span>)   <span class="cm"># ('f', '.txt')</span>
+os.path.getsize(<span class="st">"f.txt"</span>)    <span class="cm"># size in bytes</span>
+os.makedirs(<span class="st">"a/b/c"</span>, exist_ok=<span class="cn">True</span>)  <span class="cm"># create dirs</span>
+os.rename(<span class="st">"old.txt"</span>, <span class="st">"new.txt"</span>)     <span class="cm"># rename</span>
+os.remove(<span class="st">"file.txt"</span>)       <span class="cm"># delete file</span>
+os.rmdir(<span class="st">"empty_dir"</span>)       <span class="cm"># delete empty dir</span>
+
+<span class="cm"># ── pathlib (modern, OOP approach) ──</span>
+p = Path(<span class="st">"data/report.txt"</span>)
+p.exists()          <span class="cm"># True/False</span>
+p.name              <span class="cm"># 'report.txt'</span>
+p.stem              <span class="cm"># 'report'</span>
+p.suffix            <span class="cm"># '.txt'</span>
+p.parent            <span class="cm"># Path('data')</span>
+p.read_text()       <span class="cm"># read content</span>
+p.write_text(<span class="st">"hi"</span>) <span class="cm"># write content</span>
+p.mkdir(parents=<span class="cn">True</span>, exist_ok=<span class="cn">True</span>)
+<span class="bl">list</span>(p.parent.glob(<span class="st">"*.txt"</span>))  <span class="cm"># find all .txt</span>
+p2 = p.parent / <span class="st">"other.csv"</span>  <span class="cm"># path joining</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Error Handling & Patterns <span class="tag tag-purple">best practices</span></div>
+<pre><span class="cm"># Always handle file errors</span>
+<span class="kw">try</span>:
+    <span class="kw">with</span> <span class="bl">open</span>(<span class="st">"missing.txt"</span>) <span class="kw">as</span> f:
+        data = f.read()
+<span class="kw">except</span> FileNotFoundError:
+    <span class="bl">print</span>(<span class="st">"File not found!"</span>)
+<span class="kw">except</span> PermissionError:
+    <span class="bl">print</span>(<span class="st">"No permission!"</span>)
+<span class="kw">except</span> IOError <span class="kw">as</span> e:
+    <span class="bl">print</span>(<span class="st">f"IO Error: {e}"</span>)
+
+<span class="cm"># Safe file read with default</span>
+<span class="kw">def</span> <span class="fn">read_file</span>(path, default=<span class="st">""</span>):
+    <span class="kw">try</span>:
+        <span class="kw">with</span> <span class="bl">open</span>(path) <span class="kw">as</span> f:
+            <span class="kw">return</span> f.read()
+    <span class="kw">except</span> (FileNotFoundError, IOError):
+        <span class="kw">return</span> default
+
+<span class="cm"># Temporary files</span>
+<span class="kw">import</span> tempfile
+<span class="kw">with</span> tempfile.NamedTemporaryFile(
+        mode=<span class="st">'w'</span>, suffix=<span class="st">'.txt'</span>, delete=<span class="cn">True</span>) <span class="kw">as</span> tmp:
+    tmp.write(<span class="st">"temp data"</span>)
+    <span class="bl">print</span>(tmp.name)     <span class="cm"># auto-deleted after 'with'</span>
+
+<span class="cm"># Walk directory tree</span>
+<span class="kw">import</span> os
+<span class="kw">for</span> root, dirs, files <span class="kw">in</span> os.walk(<span class="st">"."</span>):
+    <span class="kw">for</span> file <span class="kw">in</span> files:
+        full_path = os.path.join(root, file)
+        <span class="bl">print</span>(full_path)</pre>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ EXCEL -->
+<div id="excel" class="section">
+  <div class="section-title"><span class="dot" style="background:var(--accent2)"></span>Excel Handling <span class="tag tag-green">openpyxl · pandas</span></div>
+  <div class="section-sub"># Two main approaches: openpyxl (native Excel) and pandas (data analysis)</div>
+
+  <div class="grid grid-2">
+
+    <div class="card">
+      <div class="card-title">openpyxl — Read Excel <span class="tag tag-green">read</span></div>
+<pre><span class="kw">from</span> openpyxl <span class="kw">import</span> load_workbook
+
+<span class="cm"># Load workbook</span>
+wb = load_workbook(<span class="st">"data.xlsx"</span>)
+wb_data = load_workbook(<span class="st">"data.xlsx"</span>, data_only=<span class="cn">True</span>)
+<span class="cm"># data_only=True reads computed values, not formulas</span>
+
+<span class="cm"># Access sheets</span>
+ws = wb.active              <span class="cm"># active/default sheet</span>
+ws = wb[<span class="st">"Sheet1"</span>]          <span class="cm"># by name</span>
+wb.sheetnames               <span class="cm"># list of all sheet names</span>
+
+<span class="cm"># Read cells</span>
+ws[<span class="st">"A1"</span>].value             <span class="cm"># value of cell A1</span>
+ws.cell(row=<span class="nm">1</span>, column=<span class="nm">1</span>).value  <span class="cm"># same</span>
+ws[<span class="st">"A1"</span>].data_type         <span class="cm"># 'n'=num, 's'=str, etc.</span>
+
+<span class="cm"># Iterate all rows</span>
+<span class="kw">for</span> row <span class="kw">in</span> ws.iter_rows(values_only=<span class="cn">True</span>):
+    <span class="bl">print</span>(row)              <span class="cm"># tuple of values</span>
+
+<span class="cm"># Iterate specific range</span>
+<span class="kw">for</span> row <span class="kw">in</span> ws.iter_rows(
+        min_row=<span class="nm">2</span>, max_row=<span class="nm">10</span>,
+        min_col=<span class="nm">1</span>, max_col=<span class="nm">3</span>,
+        values_only=<span class="cn">True</span>):
+    name, age, city = row
+
+<span class="cm"># Sheet dimensions</span>
+ws.max_row      <span class="cm"># last row with data</span>
+ws.max_column   <span class="cm"># last column with data</span>
+ws.dimensions   <span class="cm"># e.g. 'A1:D50'</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">openpyxl — Write Excel <span class="tag tag-green">write</span></div>
+<pre><span class="kw">from</span> openpyxl <span class="kw">import</span> Workbook
+<span class="kw">from</span> openpyxl.styles <span class="kw">import</span> Font, PatternFill, Alignment, Border, Side
+<span class="kw">from</span> openpyxl.utils <span class="kw">import</span> get_column_letter, column_index_from_string
+
+<span class="cm"># Create new workbook</span>
+wb = Workbook()
+ws = wb.active
+ws.title = <span class="st">"Report"</span>
+
+<span class="cm"># Add new sheets</span>
+ws2 = wb.create_sheet(<span class="st">"Data"</span>)
+ws3 = wb.create_sheet(<span class="st">"Summary"</span>, <span class="nm">0</span>)  <span class="cm"># insert at position 0</span>
+
+<span class="cm"># Write data</span>
+ws[<span class="st">"A1"</span>] = <span class="st">"Name"</span>
+ws.cell(row=<span class="nm">1</span>, column=<span class="nm">2</span>, value=<span class="st">"Age"</span>)
+
+<span class="cm"># Append rows (most efficient)</span>
+ws.append([<span class="st">"Alice"</span>, <span class="nm">30</span>, <span class="st">"NYC"</span>])
+ws.append([<span class="st">"Bob"</span>, <span class="nm">25</span>, <span class="st">"LA"</span>])
+
+<span class="cm"># Style cells</span>
+ws[<span class="st">"A1"</span>].font = Font(bold=<span class="cn">True</span>, size=<span class="nm">14</span>, color=<span class="st">"FFFFFF"</span>)
+ws[<span class="st">"A1"</span>].fill = PatternFill(<span class="st">"solid"</span>, fgColor=<span class="st">"0070C0"</span>)
+ws[<span class="st">"A1"</span>].alignment = Alignment(horizontal=<span class="st">"center"</span>)
+
+<span class="cm"># Column width & row height</span>
+ws.column_dimensions[<span class="st">"A"</span>].width = <span class="nm">20</span>
+ws.row_dimensions[<span class="nm">1</span>].height = <span class="nm">30</span>
+
+<span class="cm"># Add formula</span>
+ws[<span class="st">"C10"</span>] = <span class="st">"=SUM(C2:C9)"</span>
+
+<span class="cm"># Merge cells</span>
+ws.merge_cells(<span class="st">"A1:D1"</span>)
+
+<span class="cm"># Utility functions</span>
+get_column_letter(<span class="nm">3</span>)              <span class="cm"># 'C'</span>
+column_index_from_string(<span class="st">"D"</span>)    <span class="cm"># 4</span>
+
+<span class="cm"># Save</span>
+wb.save(<span class="st">"output.xlsx"</span>)</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">pandas — Read Excel <span class="tag tag-green">pandas</span></div>
+<pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Read Excel into DataFrame</span>
+df = pd.read_excel(<span class="st">"data.xlsx"</span>)
+df = pd.read_excel(<span class="st">"data.xlsx"</span>, sheet_name=<span class="st">"Sheet1"</span>)
+df = pd.read_excel(<span class="st">"data.xlsx"</span>, sheet_name=<span class="nm">0</span>)     <span class="cm"># by index</span>
+df = pd.read_excel(<span class="st">"data.xlsx"</span>, header=<span class="nm">0</span>)         <span class="cm"># row 0 = header</span>
+df = pd.read_excel(<span class="st">"data.xlsx"</span>, usecols=<span class="st">"A:C"</span>)    <span class="cm"># columns A-C</span>
+df = pd.read_excel(<span class="st">"data.xlsx"</span>, skiprows=<span class="nm">2</span>)       <span class="cm"># skip 2 rows</span>
+df = pd.read_excel(<span class="st">"data.xlsx"</span>, nrows=<span class="nm">100</span>)        <span class="cm"># first 100 rows</span>
+df = pd.read_excel(<span class="st">"data.xlsx"</span>, index_col=<span class="nm">0</span>)      <span class="cm"># 1st col = index</span>
+
+<span class="cm"># Read ALL sheets at once</span>
+all_sheets = pd.read_excel(<span class="st">"data.xlsx"</span>, sheet_name=<span class="cn">None</span>)
+<span class="cm"># Returns dict: {"Sheet1": df1, "Sheet2": df2, ...}</span>
+
+<span class="cm"># Explore the DataFrame</span>
+df.head(<span class="nm">5</span>)          <span class="cm"># first 5 rows</span>
+df.tail(<span class="nm">5</span>)          <span class="cm"># last 5 rows</span>
+df.shape            <span class="cm"># (rows, cols)</span>
+df.columns          <span class="cm"># column names</span>
+df.dtypes           <span class="cm"># data types</span>
+df.info()           <span class="cm"># summary info</span>
+df.describe()       <span class="cm"># statistics</span>
+
+<span class="cm"># Access columns</span>
+df[<span class="st">"Name"</span>]           <span class="cm"># Series</span>
+df[[<span class="st">"Name"</span>, <span class="st">"Age"</span>]]  <span class="cm"># DataFrame</span></pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">pandas — Manipulate & Write <span class="tag tag-green">pandas</span></div>
+<pre><span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Filtering rows</span>
+adults = df[df[<span class="st">"Age"</span>] >= <span class="nm">18</span>]
+ny_adults = df[(df[<span class="st">"City"</span>] == <span class="st">"NYC"</span>) & (df[<span class="st">"Age"</span>] > <span class="nm">25</span>)]
+
+<span class="cm"># Adding/Modifying columns</span>
+df[<span class="st">"Score_Pct"</span>] = df[<span class="st">"Score"</span>] / <span class="nm">100</span>
+df[<span class="st">"Label"</span>] = df[<span class="st">"Score"</span>].apply(<span class="kw">lambda</span> x: <span class="st">"Pass"</span> <span class="kw">if</span> x >= <span class="nm">60</span> <span class="kw">else</span> <span class="st">"Fail"</span>)
+
+<span class="cm"># Sorting</span>
+df.sort_values(<span class="st">"Age"</span>, ascending=<span class="cn">False</span>, inplace=<span class="cn">True</span>)
+
+<span class="cm"># Group by & Aggregate</span>
+summary = df.groupby(<span class="st">"City"</span>)[<span class="st">"Score"</span>].agg([<span class="st">"mean"</span>,<span class="st">"max"</span>,<span class="st">"count"</span>])
+
+<span class="cm"># Handle missing values</span>
+df.isnull().sum()             <span class="cm"># count NaN per column</span>
+df.dropna()                   <span class="cm"># drop rows with any NaN</span>
+df.fillna(<span class="nm">0</span>)                  <span class="cm"># fill NaN with 0</span>
+df[<span class="st">"Age"</span>].fillna(df[<span class="st">"Age"</span>].mean(), inplace=<span class="cn">True</span>)
+
+<span class="cm"># Write to Excel</span>
+df.to_excel(<span class="st">"output.xlsx"</span>, index=<span class="cn">False</span>)
+df.to_excel(<span class="st">"output.xlsx"</span>, sheet_name=<span class="st">"Results"</span>, index=<span class="cn">False</span>)
+
+<span class="cm"># Write MULTIPLE sheets</span>
+<span class="kw">with</span> pd.ExcelWriter(<span class="st">"report.xlsx"</span>, engine=<span class="st">"openpyxl"</span>) <span class="kw">as</span> writer:
+    df1.to_excel(writer, sheet_name=<span class="st">"Sheet1"</span>, index=<span class="cn">False</span>)
+    df2.to_excel(writer, sheet_name=<span class="st">"Sheet2"</span>, index=<span class="cn">False</span>)
+
+<span class="cm"># Write to CSV</span>
+df.to_csv(<span class="st">"output.csv"</span>, index=<span class="cn">False</span>, encoding=<span class="st">"utf-8"</span>)
+
+<span class="cm"># Install if needed: pip install openpyxl pandas</span></pre>
+    </div>
+
+  </div>
+
+  <div class="grid grid-3" style="margin-top:20px">
+    <div class="card">
+      <div class="card-title">Quick Install Guide <span class="tag tag-green">setup</span></div>
+<pre><span class="cm"># Install required libraries</span>
+pip install openpyxl      <span class="cm"># native Excel</span>
+pip install pandas        <span class="cm"># data analysis</span>
+pip install xlrd          <span class="cm"># read .xls (old format)</span>
+pip install xlwt          <span class="cm"># write .xls</span>
+pip install xlsxwriter    <span class="cm"># advanced xlsx writing</span>
+
+<span class="cm"># Import</span>
+<span class="kw">import</span> openpyxl
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+<span class="cm"># Check version</span>
+openpyxl.__version__
+pd.__version__</pre>
+    </div>
+
+    <div class="card">
+      <div class="card-title">When to Use Which? <span class="tag tag-green">guide</span></div>
+      <div class="info-box" style="margin-top:8px"><strong>openpyxl</strong> — Use when you need full control: cell formatting, charts, formulas, images, merged cells, styling, working with templates.</div>
+      <div class="tip-box"><strong>pandas</strong> — Use for data analysis: filtering, groupby, aggregation, statistics, reading large datasets efficiently, converting between formats.</div>
+      <div class="warn-box"><strong>xlsxwriter</strong> — Best for write-only, performance-focused Excel generation with charts and advanced formatting.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Common Patterns <span class="tag tag-green">recipes</span></div>
+<pre><span class="cm"># ── Read Excel → process → save ──</span>
+<span class="kw">import</span> pandas <span class="kw">as</span> pd
+
+df = pd.read_excel(<span class="st">"raw.xlsx"</span>)
+df.columns = df.columns.str.strip().str.lower()
+df.dropna(subset=[<span class="st">"name"</span>], inplace=<span class="cn">True</span>)
+df[<span class="st">"name"</span>] = df[<span class="st">"name"</span>].str.title()
+df.to_excel(<span class="st">"clean.xlsx"</span>, index=<span class="cn">False</span>)
+
+<span class="cm"># ── Auto-fit column width ──</span>
+<span class="kw">from</span> openpyxl <span class="kw">import</span> load_workbook
+wb = load_workbook(<span class="st">"out.xlsx"</span>)
+ws = wb.active
+<span class="kw">for</span> col <span class="kw">in</span> ws.columns:
+    max_len = <span class="bl">max</span>(<span class="bl">len</span>(<span class="bl">str</span>(c.value <span class="kw">or</span> <span class="st">""</span>)) <span class="kw">for</span> c <span class="kw">in</span> col)
+    ws.column_dimensions[col[<span class="nm">0</span>].column_letter].width = max_len + <span class="nm">2</span>
+wb.save(<span class="st">"out.xlsx"</span>)</pre>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+</script>
+</body>
+</html>

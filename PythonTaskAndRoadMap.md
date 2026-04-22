@@ -30,11 +30,11 @@
 ---
 
 ## Day 3
-- [ ] 11. Reverse string
-- [ ] 12. Palindrome string
-- [ ] 13. Count vowels
-- [ ] 14. Remove spaces
-- [ ] 15. Duplicate characters
+- [✓] 11. Reverse string
+- [✓] 12. Palindrome string
+- [✓] 13. Count vowels
+- [✓] 14. Remove spaces
+- [✓] 15. Duplicate characters
 
 ---
 
