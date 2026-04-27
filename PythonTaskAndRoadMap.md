@@ -54,19 +54,20 @@
 - [✓] 24. Merge lists
 - [✓] 25. Second largest
 
----
-📅 DAY 1 (Strings + Basics)
-[ ] 101. Reverse words in a sentence
-[ ] 102. Find length of string without len()
-[ ] 103. Remove duplicate characters from string
-[ ] 104. Check if string contains only digits
-[ ] 105. Count words in a sentence
-📅 DAY 2 (Numbers + Logic)
-[ ] 106. Check prime number (optimized)
-[ ] 107. Find all divisors of a number
-[ ] 108. Check perfect number
-[ ] 109. Convert binary to decimal
-[ ] 110. Find power using recursion
+
+📅 DAY 6 (Strings + Basics)
+- [✓] 26. Reverse words in a sentence
+- [✓] 27. Find length of string without len()
+- [✓] 28. Remove duplicate characters from string
+- [✓] 29. Check if string contains only digits
+- [✓] 30. Count words in a sentence
+- [✓] 31. Check prime number (optimized)
+- [✓] 32. Find all divisors of a number
+- [✓] 33. Check perfect number
+- [✓] 34. Convert binary to decimal
+- [✓] 35. Find power using recursion
+
+
 📅 DAY 3 (Lists)
 [ ] 111. Find all pairs with given sum
 [ ] 112. Move all zeros to end
