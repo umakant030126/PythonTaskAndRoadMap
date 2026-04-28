@@ -68,37 +68,42 @@
 - [✓] 35. Find power using recursion
 
 
-📅 DAY 3 (Lists)
-[ ] 111. Find all pairs with given sum
-[ ] 112. Move all zeros to end
-[ ] 113. Find duplicate elements
-[ ] 114. Find kth largest element
-[ ] 115. Split list into equal parts
-📅 DAY 4 (Strings Advanced)
-[ ] 116. Longest substring without repeating characters
-[ ] 117. Check rotation of string
-[ ] 118. String compression (aabcc → a2b1c2)
-[ ] 119. Remove all occurrences of a char
-[ ] 120. Check valid palindrome (ignore special chars)
-📅 DAY 5 (Functions + Recursion)
-[ ] 121. Recursive sum of array
-[ ] 122. Recursive string reverse
-[ ] 123. Generate all subsets of a set
-[ ] 124. Tail recursion example
-[ ] 125. Memoization example
-📅 DAY 6 (OOP Basics)
-[ ] 126. Create class for Bank Account
-[ ] 127. Implement inheritance (Vehicle → Car)
-[ ] 128. Method overloading simulation
-[ ] 129. Use __str__ method
-[ ] 130. Create abstract class
-📅 DAY 7 (Stack & Queue)
-[ ] 131. Implement stack using list
-[ ] 132. Implement queue using list
-[ ] 133. Check balanced parentheses
-[ ] 134. Reverse stack
-[ ] 135. Implement queue using 2 stacks
-📅 DAY 8 (Searching & Sorting)
+📅 DAY 7 Part 1 (Lists)
+- [ ] 36. Find all pairs with given sum
+- [ ] 37. Move all zeros to end
+- [ ] 38. Find duplicate elements
+- [ ] 39. Find kth largest element
+
+📅 DAY 7 Part 2  
+- [ ] 40. Split list into equal parts
+- [ ] 41. Longest substring without repeating characters
+- [ ] 42. Check rotation of string
+- [ ] 43. String compression (aabcc → a2b1c2)
+- [ ] 44. Remove all occurrences of a char
+- [ ] 45. Check valid palindrome (ignore special chars)
+
+📅 DAY 8 (Functions + Recursion)
+- [ ] 46. Recursive sum of array
+- [ ] 47. Recursive string reverse
+- [ ] 48. Generate all subsets of a set
+- [ ] 49. Tail recursion example
+- [ ] 50. Memoization example
+
+📅 DAY 9 (OOP Basics)
+- [ ] 51. Create class for Bank Account
+- [ ] 52. Implement inheritance (Vehicle → Car)
+- [ ] 53. Method overloading simulation
+- [ ] 54. Use __str__ method
+- [ ] 55. Create abstract class
+
+📅 DAY 10 (Stack & Queue)
+- [ ] 56. Implement stack using list
+- [ ] 57. Implement queue using list
+- [ ] 58. Check balanced parentheses
+- [ ] 59. Reverse stack
+- [ ] 60. Implement queue using 2 stacks
+
+135. 📅 DAY 8 (Searching & Sorting)
 [ ] 136. Linear search
 [ ] 137. Binary search (recursive)
 [ ] 138. Insertion sort
