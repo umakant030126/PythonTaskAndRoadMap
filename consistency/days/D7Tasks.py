@@ -58,3 +58,5 @@ def getDuplicateInList(lst):
 print(f"These number are more than one time in list :-> {getDuplicateInList([1,6,9,7,9,2,4,7,9])}")
 
 
+# 39. Find kth largest element
+
