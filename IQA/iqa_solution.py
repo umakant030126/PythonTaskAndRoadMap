@@ -65,18 +65,64 @@ def bonusEligibility(rating):
 def getHighestsalary(a,b,c):
     return c if c > (a if a>b else b) else (a if a>b else b)
 
-print(getHighestsalary(100,300,200))
-print(getHighestsalary(1000,300,200))
-print(getHighestsalary(100,300,2000))
+# print(getHighestsalary(100,300,200))
+# print(getHighestsalary(1000,300,200))
+# print(getHighestsalary(100,300,2000))
 
 
 #     Login system (username/password match)
+user_name = "ukp"
+password = 'pku'
+
+flag_val = True
+count = 0
+max_attempt = 3
+while (flag_val or count <= 3):
+    un = input("Enter user name : ")
+    up = input("Enter password : ")
+    if ((un != user_name) or (up != password)):
+        count += 1
+        max_attempt = max_attempt - 1
+        print(f"username or password is invalid, please try again. You have {max_attempt} left.")
+        if max_attempt == 0:
+            break
+    else:
+        print(f"Welcome {un}")
+        break
+
+
 
 #     ATM withdrawal validation
+bal_amt = 1000
+def checkWithDrawAmount(withdraw_amount):
+    global bal_amt
+    if withdraw_amount < bal_amt:
+        bal_amt = bal_amt -withdraw_amount
+        print(f"you can withdraw {withdraw_amount} after this you have {bal_amt}")
+    else:
+        print(f"You have not sufficient balance. You have {bal_amt}")
+
+# checkWithDrawAmount(500)
+# checkWithDrawAmount(300)
+# checkWithDrawAmount(400)
+
 
 #     Check if number is positive/negative/zero
+def checkNumberSign(number):
+    if number >= 1:
+        print(f"Number is {number}. it's Positive number.")
+    elif number == 0:
+        print(f"Number is {number} and have no sign. it's zero.")
+    else:
+        print(f"Number is {number}. it's Negative number.")
 
-#
+# checkNumberSign(0)
+# checkNumberSign(-22)
+# checkNumberSign(22)
+# checkNumberSign(332)
+# checkNumberSign(-3333)
+
+
 # 📅 Day 2 – Loops (Real Automation)
 #
 # Scenario: Log Monitoring Tool
