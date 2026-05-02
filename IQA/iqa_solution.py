@@ -6,6 +6,8 @@
 #     Take employee name & salary → classify tax slab
 # emp_name = input("Enter employee name :")
 # emp_salary = float(input("Enter employee salary"))
+import random
+
 
 def employeeTaxSlab(name, salary):
     package = 12 * salary
@@ -126,18 +128,96 @@ def checkNumberSign(number):
 # 📅 Day 2 – Loops (Real Automation)
 #
 # Scenario: Log Monitoring Tool
-#
+
+
 #     Count error logs
+def getErrorCount(filename, mode):
+    error_count = 0
+    with open(filename, mode) as fd:
+        lines = fd.readlines()
+        for line in lines:
+            if line.__contains__("DEBUG"):
+                error_count += 1
+    return error_count
+
+# print(getErrorCount("logs.txt","rt"))
+
+
 #     Print first 50 log entries
+def getNLinesOfLogs(filename,mode, number_of_lines):
+    count = 0
+    with open(filename,mode) as fd:
+        lines = fd.readlines()
+        for line in lines:
+            if count < number_of_lines:
+                print(line)
+                count +=1
+
+# getNLinesOfLogs("logs.txt","rt",5)
+
+
 #     Find repeated logs
+def getDuplicateItemInList(list_name):
+    seen = set()
+    duplicate_set = set()
+    for item in list_name:
+        if item in seen:
+            duplicate_set.add(item)
+        else:
+            seen.add(item)
+    return duplicate_set
+
+def getRepeatedLogData(filename, mode):
+    with open(filename, mode) as fd:
+        lst_data = []
+        lines = fd.readlines()
+        for line in lines:
+            if line.__contains__("LOGID"):
+                lst_data.append(line[(line.find('LOGID')+len("LOGID")+6):])
+
+        lst =  list(getDuplicateItemInList(lst_data))
+        lst_op = []
+        for single_item in lines:
+            if single_item.__contains__(lst[0]):
+                lst_op.append(single_item)
+
+        return lst_op
+
+
+print(getRepeatedLogData("logs.txt","rt"))
+
+
+
+
 #     Count digits in log ID
+
+
+
+def getDigitCountInLogId(logId):
+    count = 0
+    for ch in logId:
+        if ch.isdigit():
+            count += 1
+    return count
+
+count = getDigitCountInLogId("CIDXI-258749631")
+
+# print(f" Digits count in LogId is {count}")
+
 #     Reverse log ID
-#     Find prime request IDs
+
+def getReversedLogId(logId):
+    return logId[-1::-1]
+
+print(getReversedLogId("ABCD_1234"))
+
+
 #     Generate request IDs sequence
-#     Stop loop when "CRITICAL ERROR" found
-#     Print logs at even index
-#     Count uppercase logs
-#
+def gererateRequestId():
+    return "REQ-" + str(random.randint(1000,9999))
+
+print(gererateRequestId())
+
 # 📅 Day 3 – Strings (Text Processing 🔥)
 #
 # Scenario: Chat Application
