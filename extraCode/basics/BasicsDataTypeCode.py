@@ -9,11 +9,29 @@
 # Check palindrome number
 # Find factorial using loop
 # Fibonacci series (n terms)
+from IQA.iqa_solution import count
+
 print("Day 1 all tasks completed and solution is in 'consistency.days'")
 
 # 📅 Day 2 – Numbers + Logic
 # Check prime number (optimized)
+entered_number = int(input("Enter a number to check whether it's Prime number or not : "))
 
+if entered_number in [0,1]:
+    print(f'You entered {entered_number} number. Its not a Prime number')
+elif entered_number < 0:
+    print(f'You entered {entered_number} number. Its not a Prime number')
+elif entered_number == 2:
+    print(f'You entered {entered_number} number. Its a Prime number')
+else:
+    count = 0
+    for i in range[3:entered_number]: # error at this line
+        if entered_number % i == 0:
+            count = count + 1
+    if count != 2:
+        print(f'You entered {entered_number} number. Its not a Prime number')
+    else:
+        print(f'You entered {entered_number} number. Its a Prime number')
 
 
 # Find all divisors of a number
